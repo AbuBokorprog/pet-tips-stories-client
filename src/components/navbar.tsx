@@ -24,20 +24,16 @@ import {
   Logo,
   CategoryIcon,
   CloseIcon,
+  NextUILogo,
 } from '@/src/components/icons';
-import {
-  Avatar,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from '@nextui-org/react';
+import { Avatar } from '@nextui-org/react';
 import NavbarDropdown from './ui/home/NavbarDropdown';
 import { useState } from 'react';
 import LeftSidebar from './modules/common/home/LeftSidebar';
 
 export const Navbar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
+  const user = false;
   const searchInput = (
     <Input
       aria-label="Search"
@@ -68,8 +64,10 @@ export const Navbar = () => {
         />
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
-            <Logo />
-            <p className="font-bold text-inherit">PETS</p>
+            <NextUILogo />
+            <p className="font-bold text-xl lg:text-2xl">
+              PE<span className="text-blue-500">TS</span>
+            </p>
           </NextLink>
         </NavbarBrand>
         <NavbarItem className="hidden lg:flex w-full">{searchInput}</NavbarItem>
@@ -82,11 +80,19 @@ export const Navbar = () => {
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
         </NavbarItem>
-        <NavbarItem>
-          <NavbarDropdown>
-            <Avatar alt="User" />
-          </NavbarDropdown>
-        </NavbarItem>
+        {user ? (
+          <NavbarItem>
+            <NavbarDropdown>
+              <Avatar alt="User" />
+            </NavbarDropdown>
+          </NavbarItem>
+        ) : (
+          <NavbarItem>
+            <Link href="/login" color="primary">
+              Login
+            </Link>
+          </NavbarItem>
+        )}
       </NavbarContent>
 
       {/* small devices */}
@@ -130,9 +136,19 @@ export const Navbar = () => {
           )}
         </NavbarItem>
         <ThemeSwitch />
-        <NavbarDropdown>
-          <Avatar alt="User" />
-        </NavbarDropdown>
+        {user ? (
+          <NavbarItem>
+            <NavbarDropdown>
+              <Avatar alt="User" />
+            </NavbarDropdown>
+          </NavbarItem>
+        ) : (
+          <NavbarItem>
+            <Link href="/login" color="primary">
+              Login
+            </Link>
+          </NavbarItem>
+        )}
       </NavbarContent>
 
       <NavbarMenu>
