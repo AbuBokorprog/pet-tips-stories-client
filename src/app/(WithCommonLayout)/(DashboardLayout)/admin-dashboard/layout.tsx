@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function DashboardLayout({
+export default function adminDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
