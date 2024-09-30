@@ -89,7 +89,7 @@ export const Navbar = () => {
         ) : (
           <NavbarItem>
             <Link href="/login" color="primary">
-              Login
+              <Button color="primary">Login</Button>
             </Link>
           </NavbarItem>
         )}
@@ -145,7 +145,7 @@ export const Navbar = () => {
         ) : (
           <NavbarItem>
             <Link href="/login" color="primary">
-              Login
+              <Button color="primary">Login</Button>
             </Link>
           </NavbarItem>
         )}
