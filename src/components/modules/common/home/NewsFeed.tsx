@@ -1,6 +1,6 @@
 import React from 'react';
 import { Post } from '@/src/types/post.type';
-import PostCard from '@/src/components/ui/PostCard';
+import PostCard from '@/src/components/ui/home/PostCard';
 
 const samplePosts: Post[] = [
   {
