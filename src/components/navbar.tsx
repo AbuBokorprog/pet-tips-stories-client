@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -14,19 +16,28 @@ import { Input } from '@nextui-org/input';
 import { link as linkStyles } from '@nextui-org/theme';
 import NextLink from 'next/link';
 import clsx from 'clsx';
-
+import { motion } from 'framer-motion';
 import { siteConfig } from '@/src/config/site';
 import { ThemeSwitch } from '@/src/components/theme-switch';
 import {
-  TwitterIcon,
-  GithubIcon,
-  DiscordIcon,
-  HeartFilledIcon,
   SearchIcon,
   Logo,
+  CategoryIcon,
+  CloseIcon,
 } from '@/src/components/icons';
+import {
+  Avatar,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@nextui-org/react';
+import NavbarDropdown from './ui/home/NavbarDropdown';
+import { useState } from 'react';
+import LeftSidebar from './modules/common/home/LeftSidebar';
 
 export const Navbar = () => {
+  const [showSidebar, setShowSidebar] = useState(false);
   const searchInput = (
     <Input
       aria-label="Search"
@@ -51,10 +62,14 @@ export const Navbar = () => {
   return (
     <NextUINavbar maxWidth="2xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
+        <NavbarMenuToggle
+          // aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          className="sm:hidden"
+        />
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
             <Logo />
-            <p className="font-bold text-inherit">ACME</p>
+            <p className="font-bold text-inherit">PETS</p>
           </NextLink>
         </NavbarBrand>
         <NavbarItem className="hidden lg:flex w-full">{searchInput}</NavbarItem>
@@ -67,15 +82,57 @@ export const Navbar = () => {
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
         </NavbarItem>
+        <NavbarItem>
+          <NavbarDropdown>
+            <Avatar alt="User" />
+          </NavbarDropdown>
+        </NavbarItem>
       </NavbarContent>
 
       {/* small devices */}
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-        {/* <Link isExternal aria-label="Github" href={siteConfig.links.github}>
-          <GithubIcon className="text-default-500" />
-        </Link> */}
+        {/* <ThemeSwitch /> */}
+        <NavbarItem>
+          <Button
+            isIconOnly
+            variant="light"
+            onClick={() => setShowSidebar(!showSidebar)}
+          >
+            <CategoryIcon />
+          </Button>
+          {showSidebar && (
+            <motion.div
+              initial={{ opacity: 0, y: -100 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.5, ease: 'easeInOut' },
+              }}
+              exit={{
+                opacity: 0,
+                y: 100,
+                transition: { duration: 0.5, ease: 'easeInOut' },
+              }}
+              className="absolute top-full left-0 z-50 w-full bg-white dark:bg-black px-4"
+            >
+              <div className="flex justify-between items-center">
+                <p className="text-lg font-bold">Categories</p>
+                <Button
+                  variant="light"
+                  isIconOnly
+                  onClick={() => setShowSidebar(!showSidebar)}
+                >
+                  <CloseIcon />
+                </Button>
+              </div>
+              <LeftSidebar />
+            </motion.div>
+          )}
+        </NavbarItem>
         <ThemeSwitch />
-        <NavbarMenuToggle />
+        <NavbarDropdown>
+          <Avatar alt="User" />
+        </NavbarDropdown>
       </NavbarContent>
 
       <NavbarMenu>
