@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function LeftSidebar() {
   return (
-    <div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 rounded-lg h-screen sticky top-0 overflow-y-auto">
+    <div className="bg-white dark:bg-gray-950 shadow-md text-gray-800 dark:text-gray-200 rounded-lg h-screen sticky top-0 overflow-y-auto">
       <div className="left-sidebar p-4">
         <nav>
           <ul className="category-list space-y-2">

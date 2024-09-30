@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function RightSidebar() {
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 h-screen sticky top-0">
+    <div className="bg-white dark:bg-gray-950 shadow-md rounded-lg p-4 h-screen sticky top-0">
       <div className="users-sidebar">
         <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
           People You May Know
@@ -14,21 +14,21 @@ export default function RightSidebar() {
             {
               id: 1,
               name: 'John Doe',
-              profilePicture: 'https://example.com/john.jpg',
+              profilePicture: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
               mutualFriends: 5,
               isFollowing: false,
             },
             {
               id: 2,
               name: 'Jane Smith',
-              profilePicture: 'https://example.com/jane.jpg',
+              profilePicture: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
               mutualFriends: 3,
               isFollowing: true,
             },
             {
               id: 3,
               name: 'Bob Johnson',
-              profilePicture: 'https://example.com/bob.jpg',
+              profilePicture: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
               mutualFriends: 2,
               isFollowing: false,
             },
@@ -44,9 +44,6 @@ export default function RightSidebar() {
                   <span className="user-name font-medium text-gray-800 dark:text-gray-200">
                     {user.name}
                   </span>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {user.mutualFriends} mutual friends
-                  </p>
                 </div>
                 <button
                   className={`follow-button px-4 py-2 rounded-full text-sm font-medium ${
