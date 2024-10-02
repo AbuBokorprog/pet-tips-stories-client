@@ -1,8 +1,9 @@
+'use server';
 import axios from 'axios';
 import { cookies } from 'next/headers';
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000/api/',
+  baseURL: 'http://localhost:5000/api/',
   timeout: 1000,
   headers: { 'X-Custom-Header': 'foobar' },
 });

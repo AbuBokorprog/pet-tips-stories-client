@@ -15,10 +15,14 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      setUser(user);
-    }
-    setLoading(false);
+    const handleGetUser = async () => {
+      //   const user = await getCurrentUser();
+      if (user) {
+        setUser(user);
+      }
+      setLoading(false);
+    };
+    handleGetUser();
   }, [user, loading]);
 
   const value = {
