@@ -4,6 +4,7 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, Input, Card, CardBody, CardHeader } from '@nextui-org/react';
 import Link from 'next/link';
+import { userLoginMutation } from '@/src/hooks/auth';
 
 type FormData = {
   email: string;
@@ -11,11 +12,17 @@ type FormData = {
 };
 
 export default function LoginPage() {
-  const { control, handleSubmit } = useForm<FormData>();
+  const { control, handleSubmit, reset } = useForm<FormData>();
+  const {
+    mutate: loginHandler,
+    data,
+    isPending,
+    isSuccess,
+  } = userLoginMutation();
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
-    // Handle login logic here
+    loginHandler(data);
+    reset();
   };
 
   return (
