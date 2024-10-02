@@ -1,7 +1,15 @@
 export interface IUser {
-  id: number;
-  name: string;
+  isPremiumUser?: boolean;
+  _id: string;
+  username: string;
+  email: string;
+  password: string;
   profilePicture: string;
-  mutualFriends: number;
-  isFollowing: boolean;
+  followers?: any[];
+  following?: any[];
+  posts?: string[];
+  role?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
 }

@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, Input, Card, CardBody, CardHeader } from '@nextui-org/react';
 import Link from 'next/link';
 import { userLoginMutation } from '@/src/hooks/auth';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 type FormData = {
   email: string;
@@ -13,6 +14,8 @@ type FormData = {
 
 export default function LoginPage() {
   const { control, handleSubmit, reset } = useForm<FormData>();
+  const router = useRouter();
+  const searchTerms = useSearchParams();
   const {
     mutate: loginHandler,
     data,
@@ -20,10 +23,22 @@ export default function LoginPage() {
     isSuccess,
   } = userLoginMutation();
 
+  const redirect = searchTerms.get('redirect');
+
   const onSubmit = (data: FormData) => {
     loginHandler(data);
     reset();
   };
+
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      if (redirect) {
+        router.push(`/${redirect}`);
+      } else {
+        router.push('/');
+      }
+    }
+  });
 
   return (
     <div className="flex justify-center items-center min-h-screen">
