@@ -1,20 +1,22 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { getCurrentUser } from './services/auth/auth.services';
+import { IUser } from './types/user.type';
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   const authRoutes = ['/login', '/registration'];
 
-  type role = keyof typeof Routes;
+  type Role = keyof typeof Routes;
 
   const Routes = {
-    ADMIN: ['/admin-dashboard', '/admin-dashboard/:path*', '/profile'],
-    USER: ['/dashboard', '/dashboard/:path*', 'profile'],
+    admin: ['/admin-dashboard', '/admin-dashboard/:path*', '/profile'],
+    user: ['/dashboard', '/dashboard/:path*', 'profile'],
   };
 
   const pathName = request.nextUrl.pathname;
 
-  const user: any = false;
+  const user: any = await getCurrentUser();
 
   if (!user) {
     if (authRoutes.includes(pathName)) {

@@ -28,12 +28,14 @@ import {
 } from '@/src/components/icons';
 import { Avatar } from '@nextui-org/react';
 import NavbarDropdown from './ui/home/NavbarDropdown';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import LeftSidebar from './modules/common/home/LeftSidebar';
+import { UserContext } from '../provider/user.provider';
 
 export const Navbar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
-  const user = false;
+  const { user, loading }: any = useContext(UserContext);
+
   const searchInput = (
     <Input
       aria-label="Search"
@@ -80,10 +82,10 @@ export const Navbar = () => {
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
         </NavbarItem>
-        {user ? (
+        {user?.role ? (
           <NavbarItem>
             <NavbarDropdown>
-              <Avatar alt="User" />
+              <Avatar src={user.profilePicture} />
             </NavbarDropdown>
           </NavbarItem>
         ) : (
@@ -136,7 +138,7 @@ export const Navbar = () => {
           )}
         </NavbarItem>
         <ThemeSwitch />
-        {user ? (
+        {user.role ? (
           <NavbarItem>
             <NavbarDropdown>
               <Avatar alt="User" />

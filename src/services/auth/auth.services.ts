@@ -1,7 +1,8 @@
 'use server';
 import { cookies } from 'next/headers';
 import { axiosInstance } from '../../lib/axiosInstance';
-import { decodeToken } from '../../utils';
+import { jwtDecode } from 'jwt-decode';
+import { IUser } from '@/src/types/user.type';
 
 export const RegisterUser = async (payload: any) => {
   try {
@@ -21,8 +22,8 @@ export const LoginUser = async (payload: any) => {
     const { data }: any = await axiosInstance.post('/auth/login', payload);
 
     if (data.success) {
-      cookies().set('accessToken', data.accessToken);
-      cookies().set('refreshToken', data.refreshToken);
+      cookies().set('accessToken', data.data.accessToken);
+      cookies().set('refreshToken', data.data.refreshToken);
     }
     return data;
   } catch (error: any) {
@@ -32,8 +33,20 @@ export const LoginUser = async (payload: any) => {
 
 export const getCurrentUser = async () => {
   const token = cookies().get('accessToken')?.value;
-  const decodedToken = decodeToken(token as string);
-  console.log(decodedToken);
+  let decoded: any = [];
+
+  if (token) {
+    decoded = jwtDecode(token);
+
+    return {
+      email: decoded?.email,
+      role: decoded?.role,
+      id: decoded?.username,
+      profilePicture: decoded?.profilePicture,
+    };
+  }
+
+  return token;
 };
 
 export const getNewAccessToken = async () => {

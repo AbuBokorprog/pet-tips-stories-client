@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { IUser } from '@/src/types/user.type';
+import { getCurrentUser } from '../services/auth/auth.services';
 
 type UserContextType = {
   loading: boolean;
@@ -8,22 +9,24 @@ type UserContextType = {
   setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
 };
 
-const UserContext = createContext<UserContextType | null>(null);
+export const UserContext = createContext<UserContextType | null>(null);
 
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const handleGetUser = async () => {
+    const user: any = await getCurrentUser();
+
+    if (user) {
+      setUser(user);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const handleGetUser = async () => {
-      //   const user = await getCurrentUser();
-      if (user) {
-        setUser(user);
-      }
-      setLoading(false);
-    };
     handleGetUser();
-  }, [user, loading]);
+  }, [loading]);
 
   const value = {
     loading,
