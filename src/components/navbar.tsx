@@ -138,7 +138,7 @@ export const Navbar = () => {
           )}
         </NavbarItem>
         <ThemeSwitch />
-        {user.role ? (
+        {user?.role ? (
           <NavbarItem>
             <NavbarDropdown>
               <Avatar alt="User" />

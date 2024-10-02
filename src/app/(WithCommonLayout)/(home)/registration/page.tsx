@@ -1,42 +1,39 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, Input, Card, CardBody, CardHeader } from '@nextui-org/react';
 import Link from 'next/link';
 import { userRegisterMutation } from '@/src/hooks/auth';
 import { useRouter } from 'next/navigation';
+import { UserContext } from '@/src/provider/user.provider';
 
 type FormData = {
   username: string;
   email: string;
   password: string;
   confirmPassword: string;
+  profilePicture: string;
 };
 
 export default function RegistrationPage() {
-  const [isError, setIsError] = useState(false);
   const router = useRouter();
   const { control, handleSubmit, watch, reset } = useForm<FormData>();
 
   const password = watch('password');
-  const confirmPassword = watch('confirmPassword');
-
-  if (password !== confirmPassword) {
-    setIsError(true);
-  }
 
   const { mutate: register, isPending, isSuccess } = userRegisterMutation();
 
   const onSubmit = (data: FormData) => {
-    if (password !== confirmPassword) {
-      setIsError(true);
-      return;
-    }
     register(data);
     reset();
-    router.push('/');
   };
+
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      router.push('/login');
+    }
+  }, [isPending, isSuccess]);
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -109,9 +106,21 @@ export default function RegistrationPage() {
                 />
               )}
             />
-            <p className="text-red-500 text-sm">
-              {isError && 'The passwords do not match'}
-            </p>
+            <Controller
+              name="profilePicture"
+              control={control}
+              defaultValue=""
+              rules={{ required: 'Full Name is required' }}
+              render={({ field, fieldState: { error } }) => (
+                <Input
+                  {...field}
+                  label="Full Name"
+                  placeholder="Enter your full name"
+                  errorMessage={error?.message}
+                />
+              )}
+            />
+
             <Button type="submit" color="primary" fullWidth>
               Register
             </Button>

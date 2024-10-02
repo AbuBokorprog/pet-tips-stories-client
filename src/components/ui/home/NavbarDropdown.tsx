@@ -10,6 +10,7 @@ import {
 } from '@nextui-org/react';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
+import { toast } from 'sonner';
 
 export default function NavbarDropdown({
   children,
@@ -25,10 +26,11 @@ export default function NavbarDropdown({
   ];
   const router = useRouter();
   const pathname = usePathname();
-  const logoutHandler = () => {
-    logoutUser();
 
+  const logoutHandler = () => {
     setLoading(true);
+    logoutUser();
+    toast.success(`${user?.username} logout successfully!`);
     if (protectedRoutes.some((r) => pathname.match(r))) {
       router.push('/');
     }

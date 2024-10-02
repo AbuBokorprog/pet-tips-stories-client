@@ -6,11 +6,6 @@ import { jwtDecode } from 'jwt-decode';
 export const RegisterUser = async (payload: any) => {
   try {
     const { data }: any = await axiosInstance.post('/auth/register', payload);
-
-    if (data.success) {
-      cookies().set('accessToken', data.data.accessToken);
-      cookies().set('refreshToken', data.data.refreshToken);
-    }
   } catch (error: any) {
     throw new Error(error.response.data.message);
   }
@@ -40,7 +35,8 @@ export const getCurrentUser = async () => {
     return {
       email: decoded?.email,
       role: decoded?.role,
-      id: decoded?.username,
+      username: decoded?.username,
+      id: decoded?.id,
       profilePicture: decoded?.profilePicture,
     };
   }

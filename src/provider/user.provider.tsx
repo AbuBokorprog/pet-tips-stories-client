@@ -16,12 +16,14 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   const handleGetUser = async () => {
-    const user: any = await getCurrentUser();
-
-    if (user) {
-      setUser(user);
+    try {
+      const fetchedUser: any = await getCurrentUser();
+      setUser(fetchedUser);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    } finally {
+      setLoading(false); // Set loading to false after data is fetched or an error occurs
     }
-    setLoading(false);
   };
 
   useEffect(() => {
