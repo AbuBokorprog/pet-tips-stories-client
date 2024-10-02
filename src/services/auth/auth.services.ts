@@ -2,18 +2,17 @@
 import { cookies } from 'next/headers';
 import { axiosInstance } from '../../lib/axiosInstance';
 import { jwtDecode } from 'jwt-decode';
-import { IUser } from '@/src/types/user.type';
 
 export const RegisterUser = async (payload: any) => {
   try {
     const { data }: any = await axiosInstance.post('/auth/register', payload);
 
     if (data.success) {
-      cookies().set('accessToken', data.accessToken);
-      cookies().set('refreshToken', data.refreshToken);
+      cookies().set('accessToken', data.data.accessToken);
+      cookies().set('refreshToken', data.data.refreshToken);
     }
   } catch (error: any) {
-    throw new Error(error);
+    throw new Error(error.response.data.message);
   }
 };
 
@@ -27,7 +26,7 @@ export const LoginUser = async (payload: any) => {
     }
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    throw new Error(error.response.data.message);
   }
 };
 

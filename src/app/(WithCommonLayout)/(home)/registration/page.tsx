@@ -1,9 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, Input, Card, CardBody, CardHeader } from '@nextui-org/react';
 import Link from 'next/link';
+import { userRegisterMutation } from '@/src/hooks/auth';
+import { useRouter } from 'next/navigation';
 
 type FormData = {
   username: string;
@@ -13,12 +15,27 @@ type FormData = {
 };
 
 export default function RegistrationPage() {
-  const { control, handleSubmit, watch } = useForm<FormData>();
+  const [isError, setIsError] = useState(false);
+  const router = useRouter();
+  const { control, handleSubmit, watch, reset } = useForm<FormData>();
+
   const password = watch('password');
+  const confirmPassword = watch('confirmPassword');
+
+  if (password !== confirmPassword) {
+    setIsError(true);
+  }
+
+  const { mutate: register, isPending, isSuccess } = userRegisterMutation();
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
-    // Handle registration logic here
+    if (password !== confirmPassword) {
+      setIsError(true);
+      return;
+    }
+    register(data);
+    reset();
+    router.push('/');
   };
 
   return (
@@ -33,12 +50,12 @@ export default function RegistrationPage() {
               name="username"
               control={control}
               defaultValue=""
-              rules={{ required: 'Username is required' }}
+              rules={{ required: 'Full Name is required' }}
               render={({ field, fieldState: { error } }) => (
                 <Input
                   {...field}
-                  label="Username"
-                  placeholder="Enter your username"
+                  label="Full Name"
+                  placeholder="Enter your full name"
                   errorMessage={error?.message}
                 />
               )}
@@ -92,6 +109,9 @@ export default function RegistrationPage() {
                 />
               )}
             />
+            <p className="text-red-500 text-sm">
+              {isError && 'The passwords do not match'}
+            </p>
             <Button type="submit" color="primary" fullWidth>
               Register
             </Button>
