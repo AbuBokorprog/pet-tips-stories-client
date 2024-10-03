@@ -1,4 +1,6 @@
 'use client';
+import { useUserMeHook } from '@/src/hooks/user/user.hook';
+import { UserContext } from '@/src/provider/user.provider';
 import { IPost } from '@/src/types/post.type';
 import {
   Avatar,
@@ -15,11 +17,14 @@ import {
   RepeatIcon,
 } from 'lucide-react';
 import moment from 'moment';
-import React from 'react';
+import React, { useContext } from 'react';
 
 export default function PostCard({ post }: { post: IPost }) {
-  console.log(post);
   const fromAgo = moment(post?.createdAt).fromNow();
+  const { user }: any = useContext(UserContext);
+  const { data: userMe, isPending } = useUserMeHook();
+  const isFollowing = userMe?.data?.following?.includes(post?.authorId?._id);
+
   return (
     <Card key={post._id} className="w-full p-2">
       <CardHeader className="justify-between">
@@ -39,9 +44,16 @@ export default function PostCard({ post }: { post: IPost }) {
             </h5>
           </div>
         </div>
-        <Button color="primary" radius="full" size="sm">
-          Follow
-        </Button>
+        {user?.id !== post?.authorId?._id && (
+          <Button color="primary" radius="full" size="sm">
+            Follow
+          </Button>
+        )}
+        {isFollowing && (
+          <Button color="primary" radius="full" size="sm">
+            Unfollow
+          </Button>
+        )}
       </CardHeader>
       <CardBody className="px-3 py-0 text-small text-default-400">
         <p>{post.content}</p>

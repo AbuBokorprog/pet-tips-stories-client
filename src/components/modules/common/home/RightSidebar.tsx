@@ -1,9 +1,14 @@
 'use client';
 
 import FollowUserCard from '@/src/components/ui/home/FollowUserCard';
+import { useAllUsersHook } from '@/src/hooks/user/user.hook';
+import { useUser } from '@/src/provider/user.provider';
+import { IUser } from '@/src/types/user.type';
 import React from 'react';
 
 export default function RightSidebar() {
+  const { data: users, isPending } = useAllUsersHook();
+  const { user }: any = useUser();
   return (
     <div className="bg-white dark:bg-gray-950 shadow-md rounded-lg p-4 h-screen sticky top-0">
       <div className="users-sidebar">
@@ -11,33 +16,13 @@ export default function RightSidebar() {
           People You May Know
         </h2>
         <ul className="users-list space-y-4">
-          {[
-            {
-              id: 1,
-              name: 'John Doe',
-              profilePicture: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
-              mutualFriends: 5,
-              isFollowing: false,
-            },
-            {
-              id: 2,
-              name: 'Jane Smith',
-              profilePicture: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
-              mutualFriends: 3,
-              isFollowing: true,
-            },
-            {
-              id: 3,
-              name: 'Bob Johnson',
-              profilePicture: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
-              mutualFriends: 2,
-              isFollowing: false,
-            },
-          ].map((user) => (
-            <li key={user.id}>
-              <FollowUserCard user={user} />
-            </li>
-          ))}
+          {users?.data?.data
+            ?.filter((Iuser: IUser) => user?.id !== Iuser._id)
+            .map((Iuser: IUser) => (
+              <li key={Iuser._id}>
+                <FollowUserCard user={Iuser} currentUser={user} />
+              </li>
+            ))}
         </ul>
       </div>
     </div>
