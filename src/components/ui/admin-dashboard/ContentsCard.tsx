@@ -1,5 +1,5 @@
 'use client';
-import { Post } from '@/src/types/post.type';
+import { IPost } from '@/src/types/post.type';
 import {
   Avatar,
   Button,
@@ -16,10 +16,10 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
-export default function ContentsCard({ post }: { post: Post }) {
+export default function ContentsCard({ post }: { post: IPost }) {
   return (
     <div>
-      <Card key={post.id} className="w-full p-2">
+      {/* <Card key={post.id} className="w-full p-2">
         <CardHeader className="justify-between">
           <div className="flex gap-5">
             <Avatar isBordered radius="full" size="md" src={post.avatar} />
@@ -65,7 +65,7 @@ export default function ContentsCard({ post }: { post: Post }) {
             {post.comments}
           </Button>
         </CardFooter>
-      </Card>
+      </Card> */}
     </div>
   );
 }

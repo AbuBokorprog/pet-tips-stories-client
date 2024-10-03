@@ -32,7 +32,7 @@ axiosInstance.interceptors.response.use(
   },
   async function (error) {
     const config = error.config;
-    if (error.response.status === 401 && !config.sent) {
+    if (error?.response?.status === 401 && !config.sent) {
       config.sent = true;
       const res = await axiosInstance.get('/refresh-token');
       const accessToken = res.data.accessToken;
