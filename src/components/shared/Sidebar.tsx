@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Avatar } from '@nextui-org/avatar';
 import { Button } from '@nextui-org/button';
 import {
@@ -14,6 +14,10 @@ import {
   ChevronDownIcon,
 } from 'lucide-react';
 import Link from 'next/link';
+import { UserContext } from '@/src/provider/user.provider';
+import { usePathname, useRouter } from 'next/navigation';
+import { logoutUser } from '@/src/services/auth/auth.services';
+import { toast } from 'sonner';
 
 export default function Sidebar({ menuItems }: { menuItems: any }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +34,24 @@ export default function Sidebar({ menuItems }: { menuItems: any }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // const menuItems = session?.user?.role === 'admin' ? adminMenuItems : userMenuItems;
+  const { user, setLoading }: any = useContext(UserContext);
+  const protectedRoutes = [
+    '/dashboard/:path*',
+    '/admin-dashboard/:path*',
+    '/login',
+    '/registration',
+  ];
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const logoutHandler = () => {
+    setLoading(true);
+    logoutUser();
+    toast.success(`${user?.username} logged out successfully!`);
+    if (protectedRoutes.some((r) => pathname.match(r))) {
+      router.push('/');
+    }
+  };
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -112,6 +133,7 @@ export default function Sidebar({ menuItems }: { menuItems: any }) {
           </nav>
           <Button
             color="danger"
+            onClick={() => logoutHandler()}
             variant="light"
             startContent={<LogOutIcon />}
             className="w-full justify-start mt-auto"

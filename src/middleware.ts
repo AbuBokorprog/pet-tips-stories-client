@@ -46,5 +46,6 @@ export const config = {
     '/admin-dashboard/:path*',
     '/login',
     '/registration',
+    '/profile',
   ],
 };

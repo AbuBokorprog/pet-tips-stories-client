@@ -15,8 +15,10 @@ import Link from 'next/link';
 
 export default function NavbarDropdown({
   children,
+  menu,
 }: {
   children: React.ReactNode;
+  menu: any;
 }) {
   const { user, setLoading }: any = useContext(UserContext);
   const protectedRoutes = [
@@ -37,36 +39,6 @@ export default function NavbarDropdown({
     }
   };
 
-  const userMenu = [
-    {
-      name: 'Profile',
-      href: '/profile',
-    },
-    {
-      name: 'Dashboard',
-      href: '/dashboard',
-    },
-    {
-      name: 'Create Post',
-      href: '/dashboard/create-post',
-    },
-  ];
-
-  const adminMenu = [
-    {
-      name: 'Profile',
-      href: '/profile',
-    },
-    {
-      name: 'Admin Dashboard',
-      href: '/admin-dashboard',
-    },
-    {
-      name: 'Manage Users',
-      href: '/admin-dashboard/manage-users',
-    },
-  ];
-
   return (
     <Dropdown size="lg">
       <DropdownTrigger>
@@ -79,23 +51,11 @@ export default function NavbarDropdown({
           <p className="font-semibold">{user?.username}</p>
           <p className="font-normal text-default-500">{user?.email}</p>
         </DropdownItem>
-        {user && user.role === 'admin' ? (
-          <>
-            {adminMenu.map((item) => (
-              <DropdownItem key={item.name} href={item.href}>
-                {item.name}
-              </DropdownItem>
-            ))}
-          </>
-        ) : (
-          <>
-            {userMenu.map((item) => (
-              <DropdownItem key={item.name} href={item.href}>
-                {item.name}
-              </DropdownItem>
-            ))}
-          </>
-        )}
+        {menu.map((item: any) => (
+          <DropdownItem key={item.name} href={item.href}>
+            {item.name}
+          </DropdownItem>
+        ))}
         <DropdownItem
           onClick={logoutHandler}
           key="logout"

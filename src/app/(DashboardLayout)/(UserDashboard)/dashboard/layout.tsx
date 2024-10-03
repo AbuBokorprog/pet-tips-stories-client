@@ -21,22 +21,20 @@ export default function userDashboardLayout({
       href: '/dashboard',
     },
     {
-      key: 'profile',
-      label: 'My Profile',
-      icon: <UserIcon />,
-      href: '/dashboard/my-profile',
-    },
-    {
-      key: 'post-management',
-      label: 'Post Management',
+      key: 'contents',
+      label: 'Contents',
       icon: <FileTextIcon />,
       children: [
         {
           key: 'create-post',
           label: 'Create Post',
-          href: '/dashboard/create-post',
+          href: '/dashboard/content/create-post',
         },
-        { key: 'my-posts', label: 'My Posts', href: '/dashboard/my-posts' },
+        {
+          key: 'all-posts',
+          label: 'All Posts',
+          href: '/dashboard/content/all-posts',
+        },
       ],
     },
     {

@@ -1,6 +1,7 @@
 import Sidebar from '@/src/components/shared/Sidebar';
 import {
   ChartBarIcon,
+  DollarSignIcon,
   FileTextIcon,
   HomeIcon,
   SettingsIcon,
@@ -22,27 +23,21 @@ export default function adminDashboardLayout({
       href: '/admin-dashboard',
     },
     {
-      key: 'profile',
-      label: 'My Profile',
-      icon: <UserIcon />,
-      href: '/admin-dashboard/my-profile',
-    },
-    {
       key: 'users',
       label: 'Users',
       icon: <UsersIcon />,
       href: '/admin-dashboard/users',
     },
     {
-      key: 'all-posts',
-      label: 'All Posts',
-      icon: '',
-      href: '/admin-dashboard/posts',
+      key: 'contents',
+      label: 'Contents',
+      icon: <FileTextIcon />,
+      href: '/admin-dashboard/contents',
     },
     {
-      key: 'monetization-management',
-      label: 'Monetization Management',
-      icon: <FileTextIcon />,
+      key: 'monetization',
+      label: 'Monetization',
+      icon: <DollarSignIcon />,
       children: [
         {
           key: 'payment-history',
@@ -55,7 +50,7 @@ export default function adminDashboardLayout({
       key: 'settings',
       label: 'Settings',
       icon: <SettingsIcon />,
-      href: '/settings',
+      href: '/admin-dashboard/settings',
     },
   ];
   return (

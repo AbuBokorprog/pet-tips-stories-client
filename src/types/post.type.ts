@@ -8,4 +8,5 @@ export interface Post {
   downVotes: number;
   comments: number;
   shares: number;
+  isPublished: boolean;
 }

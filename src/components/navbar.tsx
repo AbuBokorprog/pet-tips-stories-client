@@ -57,6 +57,36 @@ export const Navbar = () => {
     />
   );
 
+  const userMenu = [
+    {
+      name: 'Profile',
+      href: '/profile',
+    },
+    {
+      name: 'Dashboard',
+      href: '/dashboard',
+    },
+    {
+      name: 'Create Post',
+      href: '/dashboard/create-post',
+    },
+  ];
+
+  const adminMenu = [
+    {
+      name: 'Profile',
+      href: '/profile',
+    },
+    {
+      name: 'Admin Dashboard',
+      href: '/admin-dashboard',
+    },
+    {
+      name: 'Manage Users',
+      href: '/admin-dashboard/manage-users',
+    },
+  ];
+
   return (
     <NextUINavbar maxWidth="2xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -84,7 +114,9 @@ export const Navbar = () => {
         </NavbarItem>
         {user?.role ? (
           <NavbarItem>
-            <NavbarDropdown>
+            <NavbarDropdown
+              menu={user?.role === 'admin' ? adminMenu : userMenu}
+            >
               <Avatar src={user.profilePicture} />
             </NavbarDropdown>
           </NavbarItem>
@@ -140,7 +172,9 @@ export const Navbar = () => {
         <ThemeSwitch />
         {user?.role ? (
           <NavbarItem>
-            <NavbarDropdown>
+            <NavbarDropdown
+              menu={user?.role === 'admin' ? adminMenu : userMenu}
+            >
               <Avatar alt="User" />
             </NavbarDropdown>
           </NavbarItem>
