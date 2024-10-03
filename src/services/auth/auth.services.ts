@@ -36,7 +36,7 @@ export const getCurrentUser = async () => {
       email: decoded?.email,
       role: decoded?.role,
       username: decoded?.username,
-      id: decoded?.id,
+      id: decoded?._id,
       profilePicture: decoded?.profilePicture,
     };
   }

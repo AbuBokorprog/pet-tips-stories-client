@@ -1,5 +1,4 @@
 export interface IUser {
-  isPremiumUser?: boolean;
   _id: string;
   username: string;
   email: string;
@@ -7,8 +6,12 @@ export interface IUser {
   profilePicture: string;
   followers?: any[];
   following?: any[];
-  posts?: string[];
-  role?: string;
+  posts?: any[];
+  role: string;
+  bio?: any;
+  isPremium?: boolean;
+  paymentHistory?: any[];
+  subscriptionExpiresAt?: any;
   createdAt?: string;
   updatedAt?: string;
   __v?: number;

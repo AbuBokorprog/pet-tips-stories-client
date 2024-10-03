@@ -1,5 +1,5 @@
 'use client';
-import { Post } from '@/src/types/post.type';
+import { IPost } from '@/src/types/post.type';
 import {
   Avatar,
   Button,
@@ -14,20 +14,28 @@ import {
   MessageCircleIcon,
   RepeatIcon,
 } from 'lucide-react';
+import moment from 'moment';
 import React from 'react';
 
-export default function PostCard({ post }: { post: Post }) {
+export default function PostCard({ post }: { post: IPost }) {
+  console.log(post);
+  const fromAgo = moment(post?.createdAt).fromNow();
   return (
-    <Card key={post.id} className="w-full p-2">
+    <Card key={post._id} className="w-full p-2">
       <CardHeader className="justify-between">
         <div className="flex gap-5">
-          <Avatar isBordered radius="full" size="md" src={post.avatar} />
+          <Avatar
+            isBordered
+            radius="full"
+            size="md"
+            src={post?.authorId?.profilePicture}
+          />
           <div className="flex flex-col gap-1 items-start justify-center">
             <h4 className="text-small font-semibold leading-none text-default-600">
-              {post.author}
+              {post.authorId?.username}
             </h4>
             <h5 className="text-small tracking-tight text-default-400">
-              {post.timestamp}
+              {fromAgo}
             </h5>
           </div>
         </div>
@@ -41,20 +49,20 @@ export default function PostCard({ post }: { post: Post }) {
       <CardFooter className="gap-3">
         <Button size="sm" variant="light">
           <ArrowUpIcon className="w-4 h-4 mr-1" />
-          {post.upVotes}
+          {post.upVotes?.length}
         </Button>
         <Button size="sm" variant="light">
           <ArrowDownIcon className="w-4 h-4 mr-1" />
-          {post.downVotes}
+          {post.downVotes?.length}
         </Button>
         <Button size="sm" variant="light">
           <MessageCircleIcon className="w-4 h-4 mr-1" />
-          {post.comments}
+          {post.comments?.length}
         </Button>
-        <Button size="sm" variant="light">
+        {/* <Button size="sm" variant="light">
           <RepeatIcon className="w-4 h-4 mr-1" />
           {post.shares}
-        </Button>
+        </Button> */}
       </CardFooter>
     </Card>
   );

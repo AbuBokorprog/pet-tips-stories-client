@@ -3,16 +3,15 @@ import axios from 'axios';
 import { cookies } from 'next/headers';
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api/',
-  timeout: 1000,
-  headers: { 'X-Custom-Header': 'foobar' },
+  baseURL: 'http://localhost:5000/api',
+  // headers: { 'X-Custom-Header': 'foobar' },
 });
 
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
   function (config) {
     const cookiesStore = cookies();
-    const accessToken = cookiesStore.get('accessToken');
+    const accessToken = cookiesStore.get('accessToken')?.value;
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }

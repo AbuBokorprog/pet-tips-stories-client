@@ -13,6 +13,7 @@ const samplePosts: Post[] = [
     downVotes: 3,
     comments: 2,
     shares: 1,
+    isPublished: true,
   },
   {
     id: 2,
@@ -24,6 +25,7 @@ const samplePosts: Post[] = [
     downVotes: 7,
     comments: 5,
     shares: 5,
+    isPublished: true,
   },
   // Add more sample posts as needed
 ];

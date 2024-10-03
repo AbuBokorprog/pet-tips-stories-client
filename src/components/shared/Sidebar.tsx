@@ -18,6 +18,7 @@ import { UserContext } from '@/src/provider/user.provider';
 import { usePathname, useRouter } from 'next/navigation';
 import { logoutUser } from '@/src/services/auth/auth.services';
 import { toast } from 'sonner';
+import { Divider } from '@nextui-org/react';
 
 export default function Sidebar({ menuItems }: { menuItems: any }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -74,12 +75,11 @@ export default function Sidebar({ menuItems }: { menuItems: any }) {
       >
         <div className="flex flex-col h-full p-4">
           <div className="flex flex-col items-center py-4">
-            <Avatar
-              src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-              size="lg"
-            />
-            <span className="font-bold mt-2">John Doe</span>
-            <span className="text-sm text-gray-500">User</span>
+            <Avatar src={user?.profilePicture} size="lg" />
+            <span className="font-bold mt-2">{user?.username}</span>
+            <span className="text-sm text-gray-500 uppercase">
+              {user?.role}
+            </span>
           </div>
           <nav className="flex-grow">
             {menuItems.map((item: any) => (
@@ -130,6 +130,15 @@ export default function Sidebar({ menuItems }: { menuItems: any }) {
                 )}
               </div>
             ))}
+
+            <Divider />
+            <Link
+              className="flex items-center gap-2 py-3 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md transition-colors duration-200"
+              href="/"
+            >
+              <HomeIcon size={20} />
+              <span>Home</span>
+            </Link>
           </nav>
           <Button
             color="danger"

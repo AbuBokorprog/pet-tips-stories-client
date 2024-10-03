@@ -8,49 +8,62 @@ import {
   Button,
   Textarea,
 } from '@nextui-org/react';
+import { useUserMeHook } from '@/src/hooks/user/user.hook';
+import { IPost } from '@/src/types/post.type';
+import PostCard from '@/src/components/ui/home/PostCard';
 
 export default function ProfilePage() {
+  const { data: userMe, isPending, isSuccess } = useUserMeHook();
+  // console.log(userMe.data);
   return (
-    <div className="container mx-auto p-4 min-h-screen flex flex-col justify-center items-center">
+    <div className="p-4 min-h-screen flex flex-col justify-center items-center">
       <div className="w-full max-w-3xl">
         <Card className="mb-6 w-full">
           <CardBody className="flex flex-col items-center text-center">
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
               <Avatar
-                src="/placeholder-profile.jpg"
-                alt="Profile Picture"
+                src={userMe?.data?.profilePicture}
+                alt={userMe?.data?.username}
                 size="lg"
               />
               <div>
-                <h1 className="text-2xl font-bold">John Doe</h1>
-                <p className="text-default-500">Web Developer</p>
+                <h1 className="text-2xl font-bold">{userMe?.data?.username}</h1>
+                <p className="text-default-500">
+                  {userMe?.data?.bio && userMe?.data?.bio}
+                </p>
               </div>
             </div>
             <div className="mt-4 flex space-x-8">
               <div>
-                <span className="font-bold">500</span> Followers
+                <span className="font-bold">
+                  {userMe?.data?.followers?.length}
+                </span>{' '}
+                Followers
               </div>
               <div>
-                <span className="font-bold">200</span> Following
+                <span className="font-bold">
+                  {userMe?.data?.following?.length}
+                </span>{' '}
+                Following
               </div>
             </div>
-            <div className="mt-4 w-full">
+            {/* <div className="mt-4 w-full">
               <h2 className="text-xl font-semibold">About</h2>
               <p className="mt-2 text-default-500">
                 Passionate web developer with 5 years of experience. Love coding
                 and learning new technologies.
               </p>
-            </div>
+            </div> */}
           </CardBody>
         </Card>
 
         <Card className="mb-6 w-full">
           <CardBody>
-            <div className="flex items-center space-x-2 mb-2">
+            <div className="flex items-center space-x-2">
               <Avatar
-                src="/placeholder-profile.jpg"
-                alt="Profile Picture"
-                size="sm"
+                src={userMe?.data?.profilePicture}
+                alt={userMe?.data?.username}
+                size="md"
               />
               <Textarea
                 placeholder="What's on your mind, John?"
@@ -61,19 +74,10 @@ export default function ProfilePage() {
           </CardBody>
         </Card>
 
-        <div className="space-y-4 w-full">
-          <Card className="w-full">
-            <CardHeader className="flex items-center space-x-2">
-              <Avatar src="/placeholder-profile.jpg" alt="User" size="sm" />
-              <span className="font-semibold">John Doe</span>
-            </CardHeader>
-            <CardBody>
-              <p>
-                This is a sample post. Here's where the content of the post
-                would go.
-              </p>
-            </CardBody>
-          </Card>
+        <div className="mx-auto space-y-4">
+          {userMe?.data?.posts?.map((post: IPost) => (
+            <PostCard key={post._id} post={post} />
+          ))}
         </div>
       </div>
     </div>
