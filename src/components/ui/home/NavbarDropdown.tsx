@@ -11,6 +11,7 @@ import {
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 export default function NavbarDropdown({
   children,
@@ -30,11 +31,41 @@ export default function NavbarDropdown({
   const logoutHandler = () => {
     setLoading(true);
     logoutUser();
-    toast.success(`${user?.username} logout successfully!`);
+    toast.success(`${user?.username} logged out successfully!`);
     if (protectedRoutes.some((r) => pathname.match(r))) {
       router.push('/');
     }
   };
+
+  const userMenu = [
+    {
+      name: 'Profile',
+      href: '/profile',
+    },
+    {
+      name: 'Dashboard',
+      href: '/dashboard',
+    },
+    {
+      name: 'Create Post',
+      href: '/dashboard/create-post',
+    },
+  ];
+
+  const adminMenu = [
+    {
+      name: 'Profile',
+      href: '/profile',
+    },
+    {
+      name: 'Admin Dashboard',
+      href: '/admin-dashboard',
+    },
+    {
+      name: 'Manage Users',
+      href: '/admin-dashboard/manage-users',
+    },
+  ];
 
   return (
     <Dropdown size="lg">
@@ -48,17 +79,25 @@ export default function NavbarDropdown({
           <p className="font-semibold">{user?.username}</p>
           <p className="font-normal text-default-500">{user?.email}</p>
         </DropdownItem>
-        <DropdownItem key="profile" href="#">
-          Profile
-        </DropdownItem>
-        <DropdownItem key="dashboard" href="#">
-          Dashboard
-        </DropdownItem>
-        <DropdownItem key="create-post" href="#">
-          Create Post
-        </DropdownItem>
+        {user && user.role === 'admin' ? (
+          <>
+            {adminMenu.map((item) => (
+              <DropdownItem key={item.name} href={item.href}>
+                {item.name}
+              </DropdownItem>
+            ))}
+          </>
+        ) : (
+          <>
+            {userMenu.map((item) => (
+              <DropdownItem key={item.name} href={item.href}>
+                {item.name}
+              </DropdownItem>
+            ))}
+          </>
+        )}
         <DropdownItem
-          onClick={() => logoutHandler()}
+          onClick={logoutHandler}
           key="logout"
           className="text-danger"
           color="danger"
