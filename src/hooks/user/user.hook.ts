@@ -55,7 +55,8 @@ export const useFollowUserMutation = () => {
     mutationFn: async (id: string) => await followUser(id),
     onSuccess: () => {
       toast.success('User followed successfully');
-      queryClient.invalidateQueries({ queryKey: ['USER_ME', 'ALL_USERS'] });
+      queryClient.invalidateQueries({ queryKey: ['USER_ME'] });
+      queryClient.invalidateQueries({ queryKey: ['ALL_USERS'] });
     },
     onError: (error) => {
       toast.error('Failed to follow user');
@@ -70,7 +71,8 @@ export const useUnFollowUserMutation = () => {
     mutationFn: async (id: string) => await unFollowUser(id),
     onSuccess: () => {
       toast.success('User unfollowed successfully');
-      queryClient.invalidateQueries({ queryKey: ['USER_ME', 'ALL_USERS'] });
+      queryClient.invalidateQueries({ queryKey: ['USER_ME'] });
+      queryClient.invalidateQueries({ queryKey: ['ALL_USERS'] });
     },
     onError: (error) => {
       toast.error('Failed to unfollow user');

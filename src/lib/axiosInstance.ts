@@ -3,7 +3,7 @@ import axios from 'axios';
 import { cookies } from 'next/headers';
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'https://pet-tips-stories-server.vercel.app/api',
   // headers: { 'X-Custom-Header': 'foobar' },
 });
 
