@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
 
   const Routes = {
     admin: ['/admin-dashboard', '/admin-dashboard/:path*', '/profile'],
-    user: ['/dashboard', '/dashboard/:path*', 'profile'],
+    user: ['/dashboard', '/dashboard/:path*', '/profile'],
   };
 
   const pathName = request.nextUrl.pathname;
@@ -47,5 +47,6 @@ export const config = {
     '/login',
     '/registration',
     '/profile',
+    // '/posts/create-post',
   ],
 };

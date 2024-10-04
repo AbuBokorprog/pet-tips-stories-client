@@ -26,11 +26,6 @@ export default function userDashboardLayout({
       icon: <FileTextIcon />,
       children: [
         {
-          key: 'create-post',
-          label: 'Create Post',
-          href: '/dashboard/content/create-post',
-        },
-        {
           key: 'all-posts',
           label: 'All Posts',
           href: '/dashboard/content/all-posts',

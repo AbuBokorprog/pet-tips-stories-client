@@ -29,6 +29,7 @@ export default function NavbarDropdown({
     '/login',
     '/registration',
     '/profile',
+    // '/posts/:path*',
   ];
   const router = useRouter();
   const pathname = usePathname();

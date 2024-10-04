@@ -33,7 +33,7 @@ export const getPostById = async (id: string) => {
 
 export const createPost = async (post: any) => {
   try {
-    const response = await axiosInstance.post('/post', post);
+    const response = await axiosInstance.post('/post/create-post', post);
     return response.data;
   } catch (error) {
     throw error;

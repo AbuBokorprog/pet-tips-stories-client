@@ -30,10 +30,11 @@ import moment from 'moment';
 import { useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
 import { toast } from 'sonner';
+import DOMPurify from 'dompurify';
 
 export default function PostCard({ post }: { post: IPost }) {
   const router = useRouter();
-
+  const content = DOMPurify.sanitize(post?.content);
   const fromAgo = moment(post?.createdAt).fromNow();
   const { user }: any = useContext(UserContext);
   const { data: userMe, isPending } = useUserMeHook();
@@ -114,19 +115,24 @@ export default function PostCard({ post }: { post: IPost }) {
             </h5>
           </div>
         </div>
-        {user?.id !== post?.authorId?._id && (
+        {user?.id !== post?.authorId?._id && !isFollowing && (
           <Button
             color="primary"
             radius="full"
             size="sm"
             onClick={() => handleFollow(user?._id as string)}
           >
-            {isFollowing ? 'Unfollow' : 'Follow'}
+            Follow
           </Button>
         )}
       </CardHeader>
       <CardBody className="px-3 py-0 text-small text-default-400">
-        <p>{post.content}</p>
+        <div
+          dangerouslySetInnerHTML={{
+            __html:
+              content.length > 500 ? content.slice(0, 500) + '...' : content,
+          }}
+        />
       </CardBody>
       <CardFooter className="gap-3">
         <Button

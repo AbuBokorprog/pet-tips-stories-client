@@ -70,7 +70,7 @@ export const Navbar = () => {
     },
     {
       name: 'Create Post',
-      href: '/dashboard/create-post',
+      href: '/posts/create-post',
     },
   ];
 

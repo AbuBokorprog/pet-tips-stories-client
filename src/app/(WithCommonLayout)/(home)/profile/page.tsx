@@ -7,6 +7,7 @@ import {
   Avatar,
   Button,
   Textarea,
+  Link,
 } from '@nextui-org/react';
 import { useUserMeHook } from '@/src/hooks/user/user.hook';
 import { IPost } from '@/src/types/post.type';
@@ -71,11 +72,13 @@ export default function ProfilePage() {
                 radius="full"
                 size="md"
               />
-              <Textarea
-                placeholder="What's on your mind, John?"
-                minRows={2}
-                className="flex-grow"
-              />
+              <Link href="/posts/create-post" className="w-full">
+                <div className="flex-grow p-2 border w-full rounded-lg bg-default-100 hover:bg-default-200 cursor-pointer transition-colors">
+                  <p className="text-default-400 w-full">
+                    What's on your mind, {userMe?.data?.username || 'User'}?
+                  </p>
+                </div>
+              </Link>
             </div>
           </CardBody>
         </Card>
