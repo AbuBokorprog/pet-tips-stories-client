@@ -4,8 +4,8 @@ export interface IUser {
   email: string;
   password: string;
   profilePicture: string;
-  followers?: any[];
-  following?: any[];
+  followers?: IUser[];
+  following?: IUser[];
   posts?: any[];
   role: string;
   bio?: any;

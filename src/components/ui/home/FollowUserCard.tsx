@@ -1,4 +1,8 @@
 'use client';
+import {
+  useFollowUserMutation,
+  useUnFollowUserMutation,
+} from '@/src/hooks/user/user.hook';
 import { IUser } from '@/src/types/user.type';
 import React from 'react';
 
@@ -7,9 +11,23 @@ export default function FollowUserCard({
   currentUser,
 }: {
   user: IUser | null;
-  currentUser: IUser | null;
+  currentUser: any;
 }) {
-  const isFollowing = currentUser?.following?.includes(user?._id);
+  const isFollowing = user?.followers?.some(
+    (follower: IUser) => follower?._id === currentUser?.id
+  );
+
+  const { mutate: followUser } = useFollowUserMutation();
+  const { mutate: unFollowUser } = useUnFollowUserMutation();
+
+  const handleFollow = (id: string) => {
+    if (isFollowing) {
+      unFollowUser(id);
+    } else {
+      followUser(id);
+    }
+  };
+
   return (
     <div className="user-item flex items-center">
       <img
@@ -28,9 +46,9 @@ export default function FollowUserCard({
             ? 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500'
             : 'bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700'
         }`}
-        onClick={() => console.log(`Follow/Unfollow ${user?.username}`)}
+        onClick={() => handleFollow(user?._id as string)}
       >
-        {isFollowing ? 'Following' : 'Follow'}
+        {isFollowing ? 'Unfollow' : 'Follow'}
       </button>
     </div>
   );
