@@ -4,7 +4,10 @@ import {
   useUnFollowUserMutation,
 } from '@/src/hooks/user/user.hook';
 import { IUser } from '@/src/types/user.type';
+import { Link } from '@nextui-org/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
+import { toast } from 'sonner';
 
 export default function FollowUserCard({
   user,
@@ -13,6 +16,7 @@ export default function FollowUserCard({
   user: IUser | null;
   currentUser: any;
 }) {
+  const router = useRouter();
   const isFollowing = user?.followers?.some(
     (follower: IUser) => follower?._id === currentUser?.id
   );
@@ -21,6 +25,10 @@ export default function FollowUserCard({
   const { mutate: unFollowUser } = useUnFollowUserMutation();
 
   const handleFollow = (id: string) => {
+    if (!currentUser) {
+      toast.error('Please login to follow user');
+      router.push('/login');
+    }
     if (isFollowing) {
       unFollowUser(id);
     } else {
@@ -30,15 +38,20 @@ export default function FollowUserCard({
 
   return (
     <div className="user-item flex items-center">
-      <img
-        src={user?.profilePicture}
-        alt={user?.username}
-        className="user-avatar w-12 h-12 rounded-full mr-3"
-      />
+      <Link href={`${!currentUser ? '/login' : `/profile/${user?._id}`}`}>
+        <img
+          src={user?.profilePicture}
+          alt={user?.username}
+          className="user-avatar w-12 h-12 rounded-full mr-3"
+        />
+      </Link>
       <div className="user-info flex-grow">
-        <span className="user-name font-medium text-gray-800 dark:text-gray-200">
+        <Link
+          href={`${!currentUser ? '/login' : `/profile/${user?._id}`}`}
+          className="user-name font-medium text-gray-800 dark:text-gray-200"
+        >
           {user?.username}
-        </span>
+        </Link>
       </div>
       <button
         className={`follow-button px-4 py-2 rounded-full text-sm font-medium ${

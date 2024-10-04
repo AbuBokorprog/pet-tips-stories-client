@@ -1,8 +1,12 @@
+'use server';
+
 import { axiosInstance } from '@/src/lib/axiosInstance';
+import { revalidateTag } from 'next/cache';
 
 export const getAllPosts = async () => {
   try {
     const response = await axiosInstance.get('/post');
+    revalidateTag('posts');
     return response.data;
   } catch (error) {
     throw error;
@@ -48,6 +52,24 @@ export const updatePost = async (id: string, post: any) => {
 export const deletePost = async (id: string) => {
   try {
     const response = await axiosInstance.delete(`/post/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const upVotePost = async (id: string) => {
+  try {
+    const response = await axiosInstance.patch(`/post/${id}/upvote`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const downVotePost = async (id: string) => {
+  try {
+    const response = await axiosInstance.patch(`/post/${id}/downvote`);
     return response.data;
   } catch (error) {
     throw error;
