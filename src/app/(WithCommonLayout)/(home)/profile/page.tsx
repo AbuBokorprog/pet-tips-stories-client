@@ -11,6 +11,7 @@ import {
 import { useUserMeHook } from '@/src/hooks/user/user.hook';
 import { IPost } from '@/src/types/post.type';
 import PostCard from '@/src/components/ui/home/PostCard';
+import ProfileUpdate from '@/src/components/ui/home/ProfileUpdate';
 
 export default function ProfilePage() {
   const { data: userMe, isPending, isSuccess } = useUserMeHook();
@@ -20,13 +21,15 @@ export default function ProfilePage() {
       <div className="w-full max-w-3xl">
         <Card className="mb-6 w-full">
           <CardBody className="flex flex-col items-center text-center">
-            <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <div className="mx-auto flex flex-col items-center justify-center">
               <Avatar
                 src={userMe?.data?.profilePicture}
                 alt={userMe?.data?.username}
                 size="lg"
+                isBordered
+                radius="full"
               />
-              <div>
+              <div className="my-4">
                 <h1 className="text-2xl font-bold">{userMe?.data?.username}</h1>
                 <p className="text-default-500">
                   {userMe?.data?.bio && userMe?.data?.bio}
@@ -47,6 +50,7 @@ export default function ProfilePage() {
                 Following
               </div>
             </div>
+            <ProfileUpdate user={userMe?.data} />
             {/* <div className="mt-4 w-full">
               <h2 className="text-xl font-semibold">About</h2>
               <p className="mt-2 text-default-500">
@@ -63,6 +67,8 @@ export default function ProfilePage() {
               <Avatar
                 src={userMe?.data?.profilePicture}
                 alt={userMe?.data?.username}
+                isBordered
+                radius="full"
                 size="md"
               />
               <Textarea

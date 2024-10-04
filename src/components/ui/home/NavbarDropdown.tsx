@@ -12,6 +12,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { useUserMeHook } from '@/src/hooks/user/user.hook';
 
 export default function NavbarDropdown({
   children,
@@ -21,11 +22,13 @@ export default function NavbarDropdown({
   menu: any;
 }) {
   const { user, setLoading }: any = useContext(UserContext);
+  const { data: userMe } = useUserMeHook();
   const protectedRoutes = [
     '/dashboard/:path*',
     '/admin-dashboard/:path*',
     '/login',
     '/registration',
+    '/profile',
   ];
   const router = useRouter();
   const pathname = usePathname();
@@ -48,8 +51,8 @@ export default function NavbarDropdown({
       </DropdownTrigger>
       <DropdownMenu aria-label="User Actions">
         <DropdownItem key="username" className="h-14 gap-2">
-          <p className="font-semibold">{user?.username}</p>
-          <p className="font-normal text-default-500">{user?.email}</p>
+          <p className="font-semibold">{userMe?.data?.username}</p>
+          <p className="font-normal text-default-500">{userMe?.data?.email}</p>
         </DropdownItem>
         {menu.map((item: any) => (
           <DropdownItem key={item.name} href={item.href}>

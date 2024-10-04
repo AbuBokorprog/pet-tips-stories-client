@@ -106,7 +106,7 @@ export default function RegistrationPage() {
                 />
               )}
             />
-            <Controller
+            {/* <Controller
               name="profilePicture"
               control={control}
               defaultValue=""
@@ -119,7 +119,7 @@ export default function RegistrationPage() {
                   errorMessage={error?.message}
                 />
               )}
-            />
+            /> */}
 
             <Button type="submit" color="primary" fullWidth>
               Register

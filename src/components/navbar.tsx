@@ -31,10 +31,12 @@ import NavbarDropdown from './ui/home/NavbarDropdown';
 import { useContext, useState } from 'react';
 import LeftSidebar from './modules/common/home/LeftSidebar';
 import { UserContext } from '../provider/user.provider';
+import { useUserMeHook } from '../hooks/user/user.hook';
 
 export const Navbar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const { user, loading }: any = useContext(UserContext);
+  const { data: userMe } = useUserMeHook();
 
   const searchInput = (
     <Input
@@ -117,7 +119,7 @@ export const Navbar = () => {
             <NavbarDropdown
               menu={user?.role === 'admin' ? adminMenu : userMenu}
             >
-              <Avatar src={user.profilePicture} />
+              <Avatar src={userMe?.data?.profilePicture} />
             </NavbarDropdown>
           </NavbarItem>
         ) : (
@@ -175,7 +177,10 @@ export const Navbar = () => {
             <NavbarDropdown
               menu={user?.role === 'admin' ? adminMenu : userMenu}
             >
-              <Avatar alt="User" />
+              <Avatar
+                alt={userMe?.data?.username}
+                src={userMe?.data?.profilePicture}
+              />
             </NavbarDropdown>
           </NavbarItem>
         ) : (
