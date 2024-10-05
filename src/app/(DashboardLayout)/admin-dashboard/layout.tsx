@@ -54,7 +54,7 @@ export default function adminDashboardLayout({
     },
   ];
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
+    <div className="flex flex-col md:flex-row min-h-screen md:gap-10">
       <div className="mb-10 md:mb-0 lg:w-80">
         <Sidebar menuItems={adminMenuItems} />
       </div>
