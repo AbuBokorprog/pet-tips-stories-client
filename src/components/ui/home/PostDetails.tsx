@@ -1,5 +1,8 @@
 'use client';
+
+import { createCommentMutation } from '@/src/hooks/comment/comment.hook';
 import {
+  getPostByIdHook,
   useDownVotePostMutation,
   useUpVotePostMutation,
 } from '@/src/hooks/posts/posts.hook';
@@ -11,15 +14,10 @@ import {
 import { UserContext } from '@/src/provider/user.provider';
 import { IPost } from '@/src/types/post.type';
 import { IUser } from '@/src/types/user.type';
-import {
-  Avatar,
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Link,
-} from '@nextui-org/react';
+import { Card, CardBody, CardFooter, CardHeader } from '@nextui-org/card';
+import { Link } from '@nextui-org/link';
+import { Avatar, Button, Textarea } from '@nextui-org/react';
+import DOMPurify from 'dompurify';
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -30,18 +28,19 @@ import moment from 'moment';
 import { useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
 import { toast } from 'sonner';
-import DOMPurify from 'dompurify';
 
-export default function PostCard({ post }: { post: IPost }) {
+const PostDetails = ({ id }: { id: string }) => {
+  const { data: post } = getPostByIdHook(id);
+
   const router = useRouter();
-  const content = DOMPurify.sanitize(post?.content);
-  const fromAgo = moment(post?.createdAt).fromNow();
+  const content = DOMPurify.sanitize(post?.data?.content);
+  const fromAgo = moment(post?.data?.createdAt).fromNow();
   const { user }: any = useContext(UserContext);
   const { data: userMe, isPending } = useUserMeHook();
 
   // check if the user is following the post author
   const isFollowing = userMe?.data?.following?.some(
-    (follower: IUser) => follower._id === post.authorId._id
+    (follower: IUser) => follower._id === post?.data?.authorId._id
   );
 
   // check if the user has upvoted the post
@@ -86,8 +85,21 @@ export default function PostCard({ post }: { post: IPost }) {
     }
   };
 
+  const { mutate: createComment } = createCommentMutation();
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    const comment = e.target.comment.value;
+    const data = {
+      postId: post?.data?._id,
+      content: comment,
+    };
+    createComment(data);
+    e.target.reset();
+  };
+
   return (
-    <Card key={post._id} className="w-full p-2">
+    <Card key={post?.data?._id} className="w-full p-2">
       <CardHeader className="justify-between">
         <div className="flex gap-5">
           <Link
@@ -97,17 +109,18 @@ export default function PostCard({ post }: { post: IPost }) {
               isBordered
               radius="full"
               size="md"
-              src={post?.authorId?.profilePicture}
+              alt="profile"
+              src={post?.data?.authorId?.profilePicture}
             />
           </Link>
           <div className="flex flex-col gap-1 items-start justify-center">
             <Link
               href={`${
-                !user?.id ? '/login' : `/profile/${post?.authorId?._id}`
+                !user?.id ? '/login' : `/profile/${post?.data?.authorId?._id}`
               }`}
             >
               <h4 className="text-small font-semibold leading-none text-default-600">
-                {post.authorId?.username}
+                {post?.data?.authorId?.username}
               </h4>
             </Link>
             <h5 className="text-small tracking-tight text-default-400">
@@ -129,50 +142,95 @@ export default function PostCard({ post }: { post: IPost }) {
       <CardBody className="px-3 py-0 text-small text-default-600">
         <Link
           className="text-large text-default-800 font-semibold"
-          href={`/posts/${post._id}`}
+          href={`/posts/${post?.data?._id}`}
         >
-          {post.title}
+          {post?.data?.title}
         </Link>
-        <Link href={`/posts/${post._id}`} className="text-default-500">
+        <div>
           <div
             dangerouslySetInnerHTML={{
               __html:
-                content.length > 500 ? content.slice(0, 500) + '...' : content,
+                content?.length > 500 ? content.slice(0, 500) + '...' : content,
             }}
           />
-        </Link>
+          {content?.length > 500 && (
+            <Button
+              size="sm"
+              variant="light"
+              onClick={() => {
+                console.log('read more');
+              }}
+            >
+              Read More
+            </Button>
+          )}
+        </div>
       </CardBody>
       <CardFooter className="gap-3">
         <Button
           size="sm"
           variant={hasUpvoted ? 'solid' : 'light'}
           color={hasUpvoted ? 'success' : 'default'}
-          onClick={() => upVoteHandler(post._id)}
+          onClick={() => upVoteHandler(post?.data?._id)}
           // isDisabled={hasDownvoted}
         >
           <ArrowUpIcon className="w-4 h-4 mr-1" />
-          {post.upVotes?.length}
+          {post?.data?.upVotes?.length}
         </Button>
         <Button
           size="sm"
           variant={hasDownvoted ? 'solid' : 'light'}
           color={hasDownvoted ? 'danger' : 'default'}
-          onClick={() => downVoteHandler(post._id)}
+          onClick={() => downVoteHandler(post?.data?._id)}
         >
           <ArrowDownIcon className="w-4 h-4 mr-1" />
-          {post.downVotes?.length}
+          {post?.data?.downVotes?.length}
         </Button>
-        <Link href={`/posts/${post._id}`}>
-          <Button size="sm" variant="light">
-            <MessageCircleIcon className="w-4 h-4 mr-1" />
-            {post.comments?.length}
-          </Button>
-        </Link>
-        {/* <Button size="sm" variant="light">
+        <Button size="sm" variant="light">
+          <MessageCircleIcon className="w-4 h-4 mr-1" />
+          {post?.data?.comments?.length}
+        </Button>
+        <Button size="sm" variant="light">
           <RepeatIcon className="w-4 h-4 mr-1" />
-          {post.shares}
-        </Button> */}
+          {post?.data?.shares}
+        </Button>
       </CardFooter>
+
+      <div className="mt-6">
+        <h3 className="text-lg font-semibold mb-4">Comments</h3>
+        {post?.data?.comments?.length > 0 ? (
+          post.data.comments.map((comment: any) => (
+            <div
+              key={comment._id}
+              className="mb-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg"
+            >
+              <div className="flex items-center mb-2">
+                <Avatar
+                  src={comment.authorId.profilePicture}
+                  size="sm"
+                  className="mr-2"
+                />
+                <span className="font-medium">{comment.authorId.username}</span>
+              </div>
+              <p className="text-sm">{comment.content}</p>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">No comments yet.</p>
+        )}
+        <form className="mt-4" onSubmit={handleSubmit}>
+          <Textarea
+            name="comment"
+            placeholder="Add a comment..."
+            className="w-full mb-2"
+          />
+          <Button size="sm" type="submit">
+            Post Comment
+          </Button>
+        </form>
+      </div>
     </Card>
   );
-}
+};
+
+export default PostDetails;

@@ -32,6 +32,7 @@ import { useContext, useState } from 'react';
 import LeftSidebar from './modules/common/home/LeftSidebar';
 import { UserContext } from '../provider/user.provider';
 import { useUserMeHook } from '../hooks/user/user.hook';
+import RightSidebar from './modules/common/home/RightSidebar';
 
 export const Navbar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -158,7 +159,7 @@ export const Navbar = () => {
               className="absolute top-full left-0 z-50 w-full bg-white dark:bg-black px-4"
             >
               <div className="flex justify-between items-center">
-                <p className="text-lg font-bold">Categories</p>
+                <p className="text-lg font-bold">Suggestions for you</p>
                 <Button
                   variant="light"
                   isIconOnly
@@ -167,7 +168,7 @@ export const Navbar = () => {
                   <CloseIcon />
                 </Button>
               </div>
-              <LeftSidebar />
+              <RightSidebar />
             </motion.div>
           )}
         </NavbarItem>

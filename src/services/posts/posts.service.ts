@@ -43,6 +43,7 @@ export const getPostsByUser = async (userId: string) => {
 export const getPostById = async (id: string) => {
   try {
     const response = await axiosInstance.get(`/post/${id}`);
+
     return response.data;
   } catch (error) {
     throw error;
