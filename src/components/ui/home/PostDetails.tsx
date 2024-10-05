@@ -1,6 +1,10 @@
 'use client';
 
-import { createCommentMutation } from '@/src/hooks/comment/comment.hook';
+import {
+  createCommentMutation,
+  deleteCommentMutation,
+  updateCommentMutation,
+} from '@/src/hooks/comment/comment.hook';
 import {
   getPostByIdHook,
   useDownVotePostMutation,
@@ -16,7 +20,16 @@ import { IPost } from '@/src/types/post.type';
 import { IUser } from '@/src/types/user.type';
 import { Card, CardBody, CardFooter, CardHeader } from '@nextui-org/card';
 import { Link } from '@nextui-org/link';
-import { Avatar, Button, Textarea } from '@nextui-org/react';
+import {
+  Avatar,
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Textarea,
+} from '@nextui-org/react';
 import DOMPurify from 'dompurify';
 import {
   ArrowDownIcon,
@@ -26,10 +39,12 @@ import {
 } from 'lucide-react';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { toast } from 'sonner';
 
 const PostDetails = ({ id }: { id: string }) => {
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editedCommentId, setEditedCommentId] = useState('');
   const { data: post } = getPostByIdHook(id);
 
   const router = useRouter();
@@ -96,6 +111,20 @@ const PostDetails = ({ id }: { id: string }) => {
     };
     createComment(data);
     e.target.reset();
+  };
+
+  const { mutate: updateComment } = updateCommentMutation();
+  const { mutate: deleteComment } = deleteCommentMutation();
+
+  const updateCommentHandler = (e: any) => {
+    e.preventDefault();
+    const comment = e.target.comment.value;
+    updateComment({ id: editedCommentId, comment: { content: comment } });
+    setEditModalOpen(false);
+  };
+
+  const handleDelete = (id: string) => {
+    deleteComment(id);
   };
 
   return (
@@ -190,10 +219,10 @@ const PostDetails = ({ id }: { id: string }) => {
           <MessageCircleIcon className="w-4 h-4 mr-1" />
           {post?.data?.comments?.length}
         </Button>
-        <Button size="sm" variant="light">
+        {/* <Button size="sm" variant="light">
           <RepeatIcon className="w-4 h-4 mr-1" />
           {post?.data?.shares}
-        </Button>
+        </Button> */}
       </CardFooter>
 
       <div className="mt-6">
@@ -204,13 +233,71 @@ const PostDetails = ({ id }: { id: string }) => {
               key={comment._id}
               className="mb-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg"
             >
-              <div className="flex items-center mb-2">
-                <Avatar
-                  src={comment.authorId.profilePicture}
-                  size="sm"
-                  className="mr-2"
-                />
-                <span className="font-medium">{comment.authorId.username}</span>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center">
+                  <Avatar
+                    src={comment.authorId.profilePicture}
+                    size="sm"
+                    className="mr-2"
+                  />
+                  <span className="font-medium">
+                    {comment.authorId.username}
+                  </span>
+                </div>
+                {comment.authorId._id === user?.id && (
+                  <div>
+                    <Button
+                      size="sm"
+                      variant="light"
+                      className="mr-2"
+                      onClick={() => {
+                        setEditModalOpen(true);
+                        setEditedCommentId(comment._id);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                    <Modal
+                      isOpen={editModalOpen}
+                      onClose={() => setEditModalOpen(false)}
+                    >
+                      <ModalContent>
+                        <ModalHeader>Edit Comment</ModalHeader>
+                        <form className="mt-4" onSubmit={updateCommentHandler}>
+                          <ModalBody>
+                            {' '}
+                            <Textarea
+                              name="comment"
+                              defaultValue={comment.content}
+                              placeholder="Add a comment..."
+                              className="w-full mb-2"
+                            />
+                          </ModalBody>
+                          <ModalFooter>
+                            <Button
+                              color="danger"
+                              variant="light"
+                              onPress={() => setEditModalOpen(false)}
+                            >
+                              Cancel
+                            </Button>
+                            <Button type="submit" color="primary">
+                              Save
+                            </Button>
+                          </ModalFooter>
+                        </form>
+                      </ModalContent>
+                    </Modal>
+                    <Button
+                      size="sm"
+                      variant="light"
+                      color="danger"
+                      onClick={() => handleDelete(comment._id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                )}
               </div>
               <p className="text-sm">{comment.content}</p>
             </div>
