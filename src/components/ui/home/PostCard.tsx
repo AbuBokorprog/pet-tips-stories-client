@@ -126,7 +126,10 @@ export default function PostCard({ post }: { post: IPost }) {
           </Button>
         )}
       </CardHeader>
-      <CardBody className="px-3 py-0 text-small text-default-400">
+      <CardBody className="px-3 py-0 text-small text-default-600">
+        <h3 className="text-large text-default-800 font-semibold">
+          {post.title}
+        </h3>
         <div
           dangerouslySetInnerHTML={{
             __html:

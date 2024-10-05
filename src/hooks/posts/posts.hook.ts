@@ -1,6 +1,8 @@
 import {
   deletePost,
   downVotePost,
+  getPostsByCategory,
+  getTopPosts,
   upVotePost,
   updatePost,
 } from '@/src/services/posts/posts.service';
@@ -17,6 +19,20 @@ export const getAllPostsHook = () => {
   return useQuery({
     queryKey: ['ALL_POSTS'],
     queryFn: async () => await getAllPosts(),
+  });
+};
+
+export const getPostsByCategoryHook = (category: string) => {
+  return useQuery({
+    queryKey: ['POSTS_BY_CATEGORY', category],
+    queryFn: async () => await getPostsByCategory(category),
+  });
+};
+
+export const getTopPostsHook = () => {
+  return useQuery({
+    queryKey: ['TOP_POSTS'],
+    queryFn: async () => await getTopPosts(),
   });
 };
 

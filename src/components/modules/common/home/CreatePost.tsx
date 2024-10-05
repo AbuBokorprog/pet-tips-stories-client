@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic'; // Import dynamic from Next.js
 import { Button, Input, Select, SelectItem, Divider } from '@nextui-org/react';
 import { createPostHook } from '@/src/hooks/posts/posts.hook';
@@ -18,9 +18,9 @@ const CreatePost = () => {
   const [images, setImages] = useState<File[]>([]);
   const [category, setCategory] = useState('');
 
-  const { mutate: createPost, isPending } = createPostHook();
+  const { mutate: createPost, isPending, isSuccess } = createPostHook();
 
-  const categories = ['tips', 'stories'];
+  const categories = ['tips', 'story'];
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -33,6 +33,15 @@ const CreatePost = () => {
     const data = { title, content, images, category };
     createPost(data);
   };
+
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      setTitle('');
+      setContent('');
+      setImages([]);
+      setCategory('');
+    }
+  }, [isPending, isSuccess]);
 
   return (
     <div className=" mx-auto p-4">

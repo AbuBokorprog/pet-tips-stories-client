@@ -9,7 +9,7 @@ import {
   Textarea,
   Link,
 } from '@nextui-org/react';
-import { useUserByIdHook, useUserMeHook } from '@/src/hooks/user/user.hook';
+import { useUserByIdHook } from '@/src/hooks/user/user.hook';
 import { IPost } from '@/src/types/post.type';
 import PostCard from '@/src/components/ui/home/PostCard';
 import ProfileUpdate from '@/src/components/ui/home/ProfileUpdate';
