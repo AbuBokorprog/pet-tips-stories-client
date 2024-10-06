@@ -1,4 +1,5 @@
 'use client';
+import { deletePostHook } from '@/src/hooks/posts/posts.hook';
 import {
   updatePostHook,
   useDownVotePostMutation,
@@ -41,7 +42,7 @@ export default function ContentsCard({ post }: { post: IPost }) {
   // upvote and downvote handler
   const { mutate: upVotePost } = useUpVotePostMutation();
   const { mutate: downVotePost } = useDownVotePostMutation();
-
+  const { mutate: deletePost } = deletePostHook();
   const upVoteHandler = (id: string) => {
     if (!user?.id) {
       toast.error('Please login to upvote');
@@ -68,6 +69,10 @@ export default function ContentsCard({ post }: { post: IPost }) {
 
   const unpublishPostHandler = (id: string) => {
     updatePost({ id, data: { isPublished: false } });
+  };
+
+  const deletePostHandler = (id: string) => {
+    deletePost(id);
   };
 
   return (
@@ -113,6 +118,14 @@ export default function ContentsCard({ post }: { post: IPost }) {
               onClick={() => unpublishPostHandler(post?._id)}
             >
               Unpublish
+            </Button>
+            <Button
+              color="danger"
+              radius="full"
+              size="sm"
+              onClick={() => deletePostHandler(post?._id)}
+            >
+              Delete
             </Button>
           </div>
         </CardHeader>
