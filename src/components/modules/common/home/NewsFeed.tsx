@@ -1,5 +1,5 @@
 'use client';
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { IPost } from '@/src/types/post.type';
 import PostCard from '@/src/components/ui/home/PostCard';
 import {
@@ -7,8 +7,11 @@ import {
   getPostsByCategoryHook,
   getTopPostsHook,
 } from '@/src/hooks/posts/posts.hook';
+import { Avatar, Link } from '@nextui-org/react';
+import { UserContext } from '@/src/provider/user.provider';
 
 export default function NewsFeed() {
+  const { user }: any = useContext(UserContext);
   const [activeTab, setActiveTab] = useState('discover');
   const { data: allPosts } = getAllPostsHook();
   const { data: topPosts } = getTopPostsHook();
@@ -42,6 +45,22 @@ export default function NewsFeed() {
             </button>
           ))}
         </div>
+      </div>
+      <div className="flex items-center space-x-2 mb-4">
+        <Avatar
+          src={user?.profilePicture}
+          alt={user?.username}
+          isBordered
+          radius="full"
+          size="md"
+        />
+        <Link href="/posts/create-post" className="w-full">
+          <div className="flex-grow p-2 border w-full rounded-lg bg-default-100 hover:bg-default-200 cursor-pointer transition-colors">
+            <p className="text-default-400 w-full">
+              What's on your mind, {user?.username || 'User'}?
+            </p>
+          </div>
+        </Link>
       </div>
       <div className="mx-auto space-y-4 lg:px-4">
         {filteredPosts?.map((post: IPost) => (

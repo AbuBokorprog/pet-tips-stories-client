@@ -45,6 +45,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex justify-center items-center min-h-screen">
+      <title>Login - PETS</title>
       <Card className="w-full max-w-lg">
         <CardHeader className="flex justify-center">
           <h2 className="text-2xl font-bold">Login</h2>

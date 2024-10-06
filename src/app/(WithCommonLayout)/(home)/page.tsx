@@ -2,7 +2,19 @@ import LeftSidebar from '@/src/components/modules/common/home/LeftSidebar';
 import NewsFeed from '@/src/components/modules/common/home/NewsFeed';
 import RightSidebar from '@/src/components/modules/common/home/RightSidebar';
 import { getAllPosts } from '@/src/services/posts/posts.service';
+import { Metadata } from 'next';
 import React from 'react';
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Home',
+    template: `%s - Home`,
+  },
+  description: 'Home',
+  icons: {
+    icon: '/favicon.ico',
+  },
+};
 
 export default async function page() {
   return (
