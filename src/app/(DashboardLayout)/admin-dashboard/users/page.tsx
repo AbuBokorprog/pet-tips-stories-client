@@ -12,11 +12,17 @@ import {
   Tooltip,
   Button,
 } from '@nextui-org/react';
-import { useAllUsersHook } from '@/src/hooks/user/user.hook';
+import {
+  useAllUsersHook,
+  useDeleteUserMutation,
+  usePromoteUserMutation,
+} from '@/src/hooks/user/user.hook';
 import { IUser } from '@/src/types/user.type';
 
 export default function UsersPage() {
   const { data: users, isLoading, isError } = useAllUsersHook();
+  const { mutate: promoteUser } = usePromoteUserMutation();
+  const { mutate: deleteUser } = useDeleteUserMutation();
   const userData = users?.data?.data;
 
   if (isLoading) {
@@ -30,8 +36,21 @@ export default function UsersPage() {
   const columns = [
     { name: 'USER', uid: 'user' },
     { name: 'EMAIL', uid: 'email' },
+    { name: 'ROLE', uid: 'role' },
     { name: 'ACTIONS', uid: 'actions' },
   ];
+
+  const handlePromoteUser = async (userId: string, role: string) => {
+    if (role === 'user') {
+      promoteUser({ id: userId, role: 'admin' });
+    } else {
+      promoteUser({ id: userId, role: 'user' });
+    }
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    deleteUser(userId);
+  };
 
   const renderCell = (user: IUser, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof IUser];
@@ -49,14 +68,29 @@ export default function UsersPage() {
             <p className="text-bold text-sm capitalize">{user.email}</p>
           </div>
         );
+      case 'role':
+        return <p className="text-bold text-sm capitalize">{user.role}</p>;
       case 'actions':
         return (
           <div className="relative flex items-center gap-2">
-            <Tooltip content="Promote to Admin">
-              <Button size="sm">Promote</Button>
+            <Tooltip
+              content={
+                user?.role === 'user' ? 'Promote to Admin' : 'Demote to User'
+              }
+            >
+              <Button
+                size="sm"
+                onClick={() => handlePromoteUser(user._id, user?.role)}
+              >
+                {user?.role === 'user' ? 'Promote' : 'Demote'}
+              </Button>
             </Tooltip>
             <Tooltip color="danger" content="Delete user">
-              <Button size="sm" color="danger">
+              <Button
+                size="sm"
+                color="danger"
+                onClick={() => handleDeleteUser(user._id)}
+              >
                 Delete
               </Button>
             </Tooltip>

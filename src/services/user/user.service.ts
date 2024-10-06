@@ -42,6 +42,16 @@ export const updateUser = async (data: any) => {
   }
 };
 
+export const promoteUser = async (id: string, role: string) => {
+  try {
+    const response = await axiosInstance.put(`/user/${id}`, { role });
+    revalidateTag('user');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const followUser = async (id: string) => {
   try {
     const response = await axiosInstance.patch(`/user/${id}/follow`);

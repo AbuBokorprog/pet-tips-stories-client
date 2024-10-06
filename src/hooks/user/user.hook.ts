@@ -4,6 +4,7 @@ import {
   getAllUsers,
   getUserById,
   getUserMe,
+  promoteUser,
   unFollowUser,
   updateUser,
 } from '@/src/services/user/user.service';
@@ -43,6 +44,22 @@ export const useUpdateUserMutation = () => {
     },
     onError: (error) => {
       toast.error('Failed to update user');
+    },
+  });
+};
+
+export const usePromoteUserMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ['PROMOTE_USER'],
+    mutationFn: async ({ id, role }: { id: string; role: string }) =>
+      await promoteUser(id, role),
+    onSuccess: () => {
+      toast.success('User promoted successfully');
+      queryClient.invalidateQueries({ queryKey: ['ALL_USERS'] });
+    },
+    onError: (error) => {
+      toast.error('Failed to promote user');
     },
   });
 };
