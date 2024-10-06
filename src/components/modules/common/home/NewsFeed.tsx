@@ -46,7 +46,7 @@ export default function NewsFeed() {
           ))}
         </div>
       </div>
-      <div className="flex items-center space-x-2 mb-4">
+      <div className="flex items-center space-x-2 mb-4 lg:px-4">
         <Avatar
           src={user?.profilePicture}
           alt={user?.username}
