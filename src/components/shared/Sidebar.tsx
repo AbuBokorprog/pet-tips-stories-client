@@ -48,6 +48,7 @@ export default function Sidebar({ menuItems }: { menuItems: any }) {
   const logoutHandler = () => {
     setLoading(true);
     logoutUser();
+    router.push('/');
     toast.success(`${user?.username} logged out successfully!`);
     if (protectedRoutes.some((r) => pathname.match(r))) {
       router.push('/');

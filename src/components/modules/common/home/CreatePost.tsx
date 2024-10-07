@@ -11,26 +11,23 @@ const ReactQuill = dynamic(() => import('react-quill'), {
 }) as any;
 
 import 'react-quill/dist/quill.snow.css';
+import { useUserMeHook } from '@/src/hooks/user/user.hook';
 
 const CreatePost = () => {
+  const { data: userMe } = useUserMeHook();
+
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
-  const [images, setImages] = useState<File[]>([]);
+  const [image, setImageUrl] = useState('');
   const [category, setCategory] = useState('');
-
+  const [type, setType] = useState('general');
   const { mutate: createPost, isPending, isSuccess } = createPostHook();
 
   const categories = ['tips', 'story'];
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setImages(Array.from(e.target.files));
-    }
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const data = { title, content, images, category };
+    const data = { title, content, image, category, type };
     createPost(data);
   };
 
@@ -38,7 +35,7 @@ const CreatePost = () => {
     if (!isPending && isSuccess) {
       setTitle('');
       setContent('');
-      setImages([]);
+      setImageUrl('');
       setCategory('');
     }
   }, [isPending, isSuccess]);
@@ -52,6 +49,22 @@ const CreatePost = () => {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Enter post title"
         />
+        {userMe?.data?.isPremium && (
+          <Select
+            label="Type"
+            placeholder="Select post type"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="mb-4"
+          >
+            <SelectItem key="general" value="general">
+              General
+            </SelectItem>
+            <SelectItem key="premium" value="premium">
+              Premium
+            </SelectItem>
+          </Select>
+        )}
         <div className="my-10 h-96">
           <ReactQuill
             theme="snow"
@@ -109,7 +122,7 @@ const CreatePost = () => {
             </SelectItem>
           ))}
         </Select>
-        <div className="flex flex-col gap-4">
+        {/* <div className="flex flex-col gap-4">
           <Input
             type="file"
             accept="image/*"
@@ -117,7 +130,14 @@ const CreatePost = () => {
             onChange={handleImageUpload}
             label="Upload Images"
           />
-        </div>
+        </div> */}
+        <Input
+          label="Image"
+          value={image}
+          name="image"
+          onChange={(e) => setImageUrl(e.target.value)}
+          placeholder="Paste image url"
+        />
         <div className="text-center mx-auto">
           <Button type="submit" color="primary" className="w-full">
             Create Post

@@ -26,8 +26,10 @@ import {
   ArrowUpIcon,
   MessageCircleIcon,
   RepeatIcon,
+  StarIcon,
 } from 'lucide-react';
 import moment from 'moment';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
 import { toast } from 'sonner';
@@ -114,6 +116,11 @@ export default function UserPostCard({ post }: { post: IPost }) {
               </span>
             </div>
           </div>
+          {post?.type === 'premium' && (
+            <span className="flex items-center gap-1">
+              <StarIcon className="w-4 h-4 mr-1 text-yellow-400" />
+            </span>
+          )}
           <div className="flex gap-2">
             <Button color="primary" radius="full" size="sm">
               Edit
@@ -124,6 +131,17 @@ export default function UserPostCard({ post }: { post: IPost }) {
           </div>
         </CardHeader>
         <CardBody className="px-3 py-0 text-small text-default-600">
+          <Link href={`/posts/${post?._id}`}>
+            {post?.image && post?.image !== 'null' && (
+              <Image
+                src={post?.image}
+                alt={post?.title}
+                width={500}
+                height={500}
+                className="w-full lg:h-40 object-cover rounded-md"
+              />
+            )}
+          </Link>
           <Link
             className="text-large text-default-800 font-semibold"
             href={`/posts/${post._id}`}

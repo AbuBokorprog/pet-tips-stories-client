@@ -63,7 +63,7 @@ export const Navbar = () => {
   const userMenu = [
     {
       name: 'Profile',
-      href: '/profile',
+      href: `/profile/${userMe?.data?._id}`,
     },
     {
       name: 'Dashboard',
@@ -73,12 +73,16 @@ export const Navbar = () => {
       name: 'Create Post',
       href: '/posts/create-post',
     },
+    {
+      name: 'Premium Subscription',
+      href: '/dashboard/premium',
+    },
   ];
 
   const adminMenu = [
     {
       name: 'Profile',
-      href: '/profile',
+      href: `/profile/${userMe?.data?._id}`,
     },
     {
       name: 'Admin Dashboard',

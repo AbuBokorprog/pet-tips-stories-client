@@ -11,7 +11,6 @@ import {
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
 import { toast } from 'sonner';
-import Link from 'next/link';
 import { useUserMeHook } from '@/src/hooks/user/user.hook';
 
 export default function NavbarDropdown({

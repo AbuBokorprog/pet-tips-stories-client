@@ -31,6 +31,7 @@ import { useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
 import { toast } from 'sonner';
 import DOMPurify from 'dompurify';
+import Image from 'next/image';
 
 export default function PostCard({ post }: { post: IPost }) {
   const router = useRouter();
@@ -115,18 +116,36 @@ export default function PostCard({ post }: { post: IPost }) {
             </h5>
           </div>
         </div>
-        {user?.id !== post?.authorId?._id && !isFollowing && (
-          <Button
-            color="primary"
-            radius="full"
-            size="sm"
-            onClick={() => handleFollow(user?._id as string)}
-          >
-            Follow
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          {post?.type === 'premium' && (
+            <span className="bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded-full">
+              Premium
+            </span>
+          )}
+          {user?.id !== post?.authorId?._id && !isFollowing && (
+            <Button
+              color="primary"
+              radius="full"
+              size="sm"
+              onClick={() => handleFollow(user?._id as string)}
+            >
+              Follow
+            </Button>
+          )}
+        </div>
       </CardHeader>
       <CardBody className="px-3 py-0 text-small text-default-600">
+        <Link href={`/posts/${post?._id}`}>
+          {post?.image && post?.image !== 'null' && (
+            <Image
+              src={post?.image}
+              alt={post?.title}
+              width={500}
+              height={500}
+              className="w-full lg:h-40 object-cover rounded-md"
+            />
+          )}
+        </Link>
         <Link
           className="text-large text-default-800 font-semibold"
           href={`/posts/${post._id}`}

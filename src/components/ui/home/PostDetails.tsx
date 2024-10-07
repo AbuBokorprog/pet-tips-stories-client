@@ -38,6 +38,7 @@ import {
   RepeatIcon,
 } from 'lucide-react';
 import moment from 'moment';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import { toast } from 'sonner';
@@ -157,18 +158,36 @@ const PostDetails = ({ id }: { id: string }) => {
             </h5>
           </div>
         </div>
-        {user?.id !== post?.authorId?._id && !isFollowing && (
-          <Button
-            color="primary"
-            radius="full"
-            size="sm"
-            onClick={() => handleFollow(user?._id as string)}
-          >
-            Follow
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          {post?.data?.type === 'premium' && (
+            <span className="bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded-full">
+              Premium
+            </span>
+          )}
+          {user?.id !== post?.data?.authorId?._id && !isFollowing && (
+            <Button
+              color="primary"
+              radius="full"
+              size="sm"
+              onClick={() => handleFollow(user?._id as string)}
+            >
+              Follow
+            </Button>
+          )}
+        </div>
       </CardHeader>
       <CardBody className="px-3 py-0 text-small text-default-600">
+        <div className="mb-10">
+          {post?.data?.image && post?.data?.image !== 'null' && (
+            <Image
+              src={post?.data?.image}
+              alt={post?.data?.title}
+              width={500}
+              height={500}
+              className="w-full object-cover rounded-md"
+            />
+          )}
+        </div>
         <Link
           className="text-large text-default-800 font-semibold"
           href={`/posts/${post?.data?._id}`}
@@ -176,22 +195,44 @@ const PostDetails = ({ id }: { id: string }) => {
           {post?.data?.title}
         </Link>
         <div>
-          <div
-            dangerouslySetInnerHTML={{
-              __html:
-                content?.length > 500 ? content.slice(0, 500) + '...' : content,
-            }}
-          />
-          {content?.length > 500 && (
-            <Button
-              size="sm"
-              variant="light"
-              onClick={() => {
-                console.log('read more');
-              }}
-            >
-              Read More
-            </Button>
+          {post?.data?.type === 'premium' &&
+          !userMe?.data?.isPremium &&
+          userMe?.data?.role === 'user' ? (
+            <>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    content?.slice(0, Math.floor(content.length / 2)) + '...',
+                }}
+              />
+              <Link
+                href="/dashboard/premium"
+                className="mt-2 flex items-center justify-center"
+              >
+                <Button size="sm" color="warning">
+                  Become Premium to Read More
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: content,
+                }}
+              />
+              {content?.length > 500 && (
+                <Button
+                  size="sm"
+                  variant="light"
+                  onClick={() => {
+                    console.log('read more');
+                  }}
+                >
+                  Read More
+                </Button>
+              )}
+            </>
           )}
         </div>
       </CardBody>

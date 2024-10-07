@@ -13,11 +13,16 @@ import { useUserByIdHook } from '@/src/hooks/user/user.hook';
 import { IPost } from '@/src/types/post.type';
 import PostCard from '@/src/components/ui/home/PostCard';
 import ProfileUpdate from '@/src/components/ui/home/ProfileUpdate';
+import { IUser } from '@/src/types/user.type';
 
 export default function ProfilePage({ params }: { params: { id: string } }) {
   const { id } = params;
   const { data: userMe, isPending, isSuccess } = useUserByIdHook(id);
-  // console.log(userMe.data);
+  const isFollowing = userMe?.data?.following?.some(
+    (user: IUser) => user._id === id
+  );
+  // console.log(isFollowing);
+
   return (
     <div className="p-4 min-h-screen flex flex-col justify-center items-center">
       <div className="w-full max-w-3xl">
@@ -33,6 +38,11 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
               />
               <div className="my-4">
                 <h1 className="text-2xl font-bold">{userMe?.data?.username}</h1>
+                {userMe?.data?.isPremium && (
+                  <p className="text-yellow-500 font-semibold">
+                    Premium Member
+                  </p>
+                )}
                 <p className="text-default-500">
                   {userMe?.data?.bio && userMe?.data?.bio}
                 </p>
@@ -52,6 +62,18 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
                 Following
               </div>
             </div>
+            {id !== userMe?.data?._id && (
+              <Button
+                color="primary"
+                className="mt-4"
+                onClick={() => {
+                  /* Add follow/unfollow logic here */
+                }}
+              >
+                {/* Assuming we have a way to check if the current user is following */}
+                {userMe?.data?.followers?.includes(id) ? 'Unfollow' : 'Follow'}
+              </Button>
+            )}
             <ProfileUpdate user={userMe?.data} />
             {/* <div className="mt-4 w-full">
               <h2 className="text-xl font-semibold">About</h2>
