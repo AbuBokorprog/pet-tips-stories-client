@@ -37,7 +37,7 @@ const UserDashboard = ({ user }: { user: IUser }) => {
               Manage your account settings and preferences
             </p>
             <Button variant="bordered" fullWidth>
-              <Link href="/profile">View Profile</Link>
+              <Link href={`/profile/${user?._id}`}>View Profile</Link>
             </Button>
           </CardBody>
         </Card>

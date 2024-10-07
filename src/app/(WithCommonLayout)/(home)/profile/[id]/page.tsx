@@ -21,7 +21,6 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
   const isFollowing = userMe?.data?.following?.some(
     (user: IUser) => user._id === id
   );
-  // console.log(isFollowing);
 
   return (
     <div className="p-4 min-h-screen flex flex-col justify-center items-center">

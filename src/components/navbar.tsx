@@ -38,7 +38,7 @@ export const Navbar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const { user, loading }: any = useContext(UserContext);
   const { data: userMe } = useUserMeHook();
-
+  console.log(user);
   const searchInput = (
     <Input
       aria-label="Search"

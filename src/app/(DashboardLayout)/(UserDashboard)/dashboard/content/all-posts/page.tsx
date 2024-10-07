@@ -1,5 +1,4 @@
 import UserPostCard from '@/src/components/ui/user-dashboard/UserPostCard';
-import { UserContext } from '@/src/provider/user.provider';
 import { getCurrentUser } from '@/src/services/auth/auth.services';
 import { getPostsByUser } from '@/src/services/posts/posts.service';
 import { IPost } from '@/src/types/post.type';

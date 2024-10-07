@@ -20,12 +20,12 @@ export function Providers({ children, themeProps }: ProvidersProps) {
 
   return (
     <NextUIProvider navigate={router.push}>
-      <QueryClientProvider client={queryClient}>
-        <UserProvider>
+      <UserProvider>
+        <QueryClientProvider client={queryClient}>
           <Toaster />
           <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
-        </UserProvider>
-      </QueryClientProvider>
+        </QueryClientProvider>
+      </UserProvider>
     </NextUIProvider>
   );
 }
