@@ -13,9 +13,7 @@ import { Button } from '@nextui-org/button';
 import { Kbd } from '@nextui-org/kbd';
 import { Link } from '@nextui-org/link';
 import { Input } from '@nextui-org/input';
-import { link as linkStyles } from '@nextui-org/theme';
 import NextLink from 'next/link';
-import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { siteConfig } from '@/src/config/site';
 import { ThemeSwitch } from '@/src/components/theme-switch';
@@ -32,32 +30,12 @@ import { useContext, useState } from 'react';
 import { UserContext } from '../provider/user.provider';
 import { useUserMeHook } from '../hooks/user/user.hook';
 import RightSidebar from './modules/common/home/RightSidebar';
+import SearchField from './shared/SearchField';
 
 export const Navbar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const { user, loading }: any = useContext(UserContext);
   const { data: userMe } = useUserMeHook();
-
-  const searchInput = (
-    <Input
-      aria-label="Search"
-      classNames={{
-        inputWrapper: 'bg-default-100',
-        input: 'text-sm',
-      }}
-      endContent={
-        <Kbd className="hidden lg:inline-block" keys={['command']}>
-          K
-        </Kbd>
-      }
-      labelPlacement="outside"
-      placeholder="Search..."
-      startContent={
-        <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
-      }
-      type="search"
-    />
-  );
 
   const userMenu = [
     {
@@ -108,7 +86,9 @@ export const Navbar = () => {
             </p>
           </NextLink>
         </NavbarBrand>
-        <NavbarItem className="hidden lg:flex w-full">{searchInput}</NavbarItem>
+        <NavbarItem className="hidden lg:flex w-full">
+          <SearchField />
+        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent
@@ -197,7 +177,7 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarMenu>
-        {searchInput}
+        <SearchField />
         <div className="mx-4 mt-2 flex flex-col gap-2">
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>

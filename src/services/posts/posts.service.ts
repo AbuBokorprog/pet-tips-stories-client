@@ -3,6 +3,16 @@
 import { axiosInstance } from '@/src/lib/axiosInstance';
 import { revalidateTag } from 'next/cache';
 
+export const getPostsBySearchTerm = async (search: string) => {
+  try {
+    const response = await axiosInstance.get(`/post?searchTerm=${search}`);
+    revalidateTag('posts');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getAllPosts = async () => {
   try {
     const response = await axiosInstance.get('/post');

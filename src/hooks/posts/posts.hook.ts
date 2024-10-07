@@ -2,6 +2,7 @@ import {
   deletePost,
   downVotePost,
   getPostsByCategory,
+  getPostsBySearchTerm,
   getTopPosts,
   upVotePost,
   updatePost,
@@ -14,6 +15,13 @@ import {
 } from '@/src/services/posts/posts.service';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+
+export const getPostsBySearchTermHook = (search: any) => {
+  return useQuery({
+    queryKey: ['SEARCH_POSTS'],
+    queryFn: async () => await getPostsBySearchTerm(search),
+  });
+};
 
 export const getAllPostsHook = () => {
   return useQuery({
