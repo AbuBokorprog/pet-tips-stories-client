@@ -6,6 +6,7 @@ import { getPostsBySearchTermHook } from '@/src/hooks/posts/posts.hook';
 import { IPost } from '@/src/types/post.type';
 import DOMPurify from 'dompurify';
 import { useDebounce } from 'use-debounce';
+import { Link } from '@nextui-org/link';
 
 const SearchField = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -56,7 +57,8 @@ const SearchField = () => {
               </div>
             )}
             {data?.data?.data?.map((post: IPost) => (
-              <div
+              <Link
+                href={`/post/${post?._id}`}
                 key={post?._id}
                 className="p-4 bg-default-100 rounded-lg shadow-md"
               >
@@ -80,7 +82,7 @@ const SearchField = () => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
