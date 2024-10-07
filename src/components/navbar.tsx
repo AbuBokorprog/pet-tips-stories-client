@@ -29,7 +29,6 @@ import {
 import { Avatar } from '@nextui-org/react';
 import NavbarDropdown from './ui/home/NavbarDropdown';
 import { useContext, useState } from 'react';
-import LeftSidebar from './modules/common/home/LeftSidebar';
 import { UserContext } from '../provider/user.provider';
 import { useUserMeHook } from '../hooks/user/user.hook';
 import RightSidebar from './modules/common/home/RightSidebar';
@@ -38,7 +37,7 @@ export const Navbar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const { user, loading }: any = useContext(UserContext);
   const { data: userMe } = useUserMeHook();
-  console.log(user);
+
   const searchInput = (
     <Input
       aria-label="Search"
