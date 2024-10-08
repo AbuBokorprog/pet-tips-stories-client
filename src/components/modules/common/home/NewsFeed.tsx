@@ -75,14 +75,18 @@ export default function NewsFeed() {
         <div>
           <NewsFeedTab activeTab={activeTab} handleTabClick={handleTabClick} />
           <div className="flex items-center space-x-2 mb-4 lg:px-4">
-            <Avatar
-              src={user?.profilePicture}
-              alt={user?.username}
-              isBordered
-              radius="full"
-              size="md"
-            />
-            <Link href="/posts/create-post" className="w-full">
+            <Link href={`${!user?.id ? '/login' : `/profile/${user?.id}`}`}>
+              <Avatar
+                isBordered
+                radius="full"
+                size="md"
+                src={user?.profilePicture}
+              />
+            </Link>
+            <Link
+              href={`${!user?.id ? '/login' : '/posts/create-post'}`}
+              className="w-full"
+            >
               <div className="flex-grow p-2 border w-full rounded-lg bg-default-100 hover:bg-default-200 cursor-pointer transition-colors">
                 <p className="text-default-400 w-full">
                   What's on your mind, {user?.username || 'User'}?

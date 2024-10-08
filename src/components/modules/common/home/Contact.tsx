@@ -1,6 +1,7 @@
 'use client';
-
-import React, { useState } from 'react';
+import { toast } from 'sonner';
+import emailjs from '@emailjs/browser';
+import React from 'react';
 import {
   Card,
   CardBody,
@@ -10,28 +11,29 @@ import {
   Divider,
 } from '@nextui-org/react';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
+  const { register, reset, handleSubmit } = useForm();
 
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      await emailjs.send(
+        'service_7exo6md',
+        'template_x489mwc',
+        {
+          from_name: data.name,
+          from_email: data.email,
+          message: data.message,
+        },
+        'TPpFzhZxFK7nDe2XM'
+      );
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', formData);
-    // Reset form after submission
-    setFormData({ name: '', email: '', message: '' });
+      toast.success('Send your email!');
+      reset();
+    } catch (error) {
+      toast.error('Please try again!');
+    }
   };
 
   return (
@@ -41,13 +43,12 @@ const Contact = () => {
         <Card className="p-6">
           <CardBody>
             <h2 className="text-2xl font-semibold mb-4">Send us a message</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Input
                 type="text"
                 label="Name"
+                {...register('name', { required: true })}
                 name="name"
-                value={formData.name}
-                onChange={handleChange}
                 placeholder="Enter your name"
                 className="mb-4"
                 required
@@ -55,18 +56,14 @@ const Contact = () => {
               <Input
                 type="email"
                 label="Email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
+                {...register('email', { required: true })}
                 placeholder="Enter your email"
                 className="mb-4"
                 required
               />
               <Textarea
                 label="Message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
+                {...register('message', { required: true })}
                 placeholder="Enter your message"
                 className="mb-4"
                 rows={4}
