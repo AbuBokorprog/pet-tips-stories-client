@@ -74,8 +74,12 @@ export const Navbar = () => {
       href: '/admin-dashboard',
     },
     {
-      name: 'Manage Users',
-      href: '/admin-dashboard/manage-users',
+      name: 'About',
+      href: '/about',
+    },
+    {
+      name: 'Contact',
+      href: '/contact',
     },
   ];
 

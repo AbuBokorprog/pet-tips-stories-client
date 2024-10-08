@@ -5,7 +5,7 @@ import { revalidateTag } from 'next/cache';
 export const getAllUsers = async () => {
   try {
     const response = await axiosInstance.get('/user');
-    revalidateTag('user');
+
     return response.data;
   } catch (error) {
     throw error;
@@ -15,7 +15,7 @@ export const getAllUsers = async () => {
 export const getUserById = async (id: string) => {
   try {
     const response = await axiosInstance.get(`/user/${id}`);
-    revalidateTag('user');
+
     return response.data;
   } catch (error) {
     throw error;
@@ -25,7 +25,7 @@ export const getUserById = async (id: string) => {
 export const getUserMe = async () => {
   try {
     const response = await axiosInstance.get('/user/me');
-    revalidateTag('user');
+
     return response.data;
   } catch (error) {
     throw error;
@@ -35,7 +35,7 @@ export const getUserMe = async () => {
 export const updateUser = async (data: any) => {
   try {
     const response = await axiosInstance.put('/user/update/me', data);
-    revalidateTag('user');
+
     return response.data;
   } catch (error) {
     throw error;
@@ -58,6 +58,7 @@ export const followUser = async (id: string) => {
     revalidateTag('user');
     return response.data;
   } catch (error) {
+    console.log(error);
     throw error;
   }
 };
@@ -68,6 +69,7 @@ export const unFollowUser = async (id: string) => {
     revalidateTag('user');
     return response.data;
   } catch (error) {
+    console.log(error);
     throw error;
   }
 };

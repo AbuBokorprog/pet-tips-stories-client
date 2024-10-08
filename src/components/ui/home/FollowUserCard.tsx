@@ -21,7 +21,7 @@ export default function FollowUserCard({
     (follower: IUser) => follower?._id === currentUser?.id
   );
 
-  const { mutate: followUser } = useFollowUserMutation();
+  const { mutate: followUser, data } = useFollowUserMutation();
   const { mutate: unFollowUser } = useUnFollowUserMutation();
 
   const handleFollow = (id: string) => {

@@ -55,7 +55,7 @@ export default function NewsFeed() {
         ]; // Add new posts that are not replacements
       });
     }
-  }, [allPosts, posts]);
+  }, [allPosts]);
 
   useEffect(() => {
     refetch();

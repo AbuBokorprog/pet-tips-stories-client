@@ -42,30 +42,33 @@ export default function PostCard({ post }: { post: IPost }) {
 
   // check if the user is following the post author
   const isFollowing = userMe?.data?.following?.some(
-    (follower: IUser) => follower._id === post.authorId._id
+    (follower: IUser) => follower._id === post?.authorId?._id
+  );
+
+  const isFollower = userMe?.data?.followers?.some(
+    (follower: IUser) => follower._id === post?.authorId?._id
   );
 
   // check if the user has upvoted the post
   const hasUpvoted = post?.upVotes?.includes(user?.id);
   const hasDownvoted = post?.downVotes?.includes(user?.id);
 
-  // follow and unfollow handler
-  const { mutate: followUser } = useFollowUserMutation();
-  const { mutate: unFollowUser } = useUnFollowUserMutation();
-
   // upvote and downvote handler
   const { mutate: upVotePost } = useUpVotePostMutation();
   const { mutate: downVotePost } = useDownVotePostMutation();
+
+  const { mutate: followUser, data } = useFollowUserMutation();
+  const { mutate: unFollowUser } = useUnFollowUserMutation();
 
   const handleFollow = (id: string) => {
     if (!user?.id) {
       toast.error('Please login to follow user');
       router.push('/login');
-      if (isFollowing) {
-        unFollowUser(id);
-      } else {
-        followUser(id);
-      }
+    }
+    if (isFollowing) {
+      unFollowUser(id);
+    } else {
+      followUser(id);
     }
   };
 
@@ -122,12 +125,12 @@ export default function PostCard({ post }: { post: IPost }) {
               Premium
             </span>
           )}
-          {user?.id !== post?.authorId?._id && !isFollowing && (
+          {user?.id !== post?.authorId?._id && !isFollowing && !isFollower && (
             <Button
               color="primary"
               radius="full"
               size="sm"
-              onClick={() => handleFollow(user?._id as string)}
+              onClick={() => handleFollow(post?.authorId?._id as string)}
             >
               Follow
             </Button>
