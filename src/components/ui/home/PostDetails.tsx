@@ -59,8 +59,9 @@ const PostDetails = ({ id }: { id: string }) => {
   } = useUserMeHook();
 
   // check if the user is following the post author
+  // check if the user is following the post author
   const isFollowing = userMe?.data?.following?.some(
-    (follower: IUser) => follower._id === post?.data?.authorId._id
+    (follower: IUser) => follower._id === post?.data?.authorId?._id
   );
 
   // check if the user has upvoted the post
@@ -71,23 +72,22 @@ const PostDetails = ({ id }: { id: string }) => {
     (votedUser: IUser) => votedUser?._id === user?.id
   );
 
-  // follow and unfollow handler
-  const { mutate: followUser } = useFollowUserMutation();
-  const { mutate: unFollowUser } = useUnFollowUserMutation();
-
   // upvote and downvote handler
   const { mutate: upVotePost } = useUpVotePostMutation();
   const { mutate: downVotePost } = useDownVotePostMutation();
 
+  const { mutate: followUser, data } = useFollowUserMutation();
+  const { mutate: unFollowUser } = useUnFollowUserMutation();
+
   const handleFollow = (id: string) => {
-    if (!userMe?.data?.id) {
+    if (!user?.id) {
       toast.error('Please login to follow user');
       router.push('/login');
-      if (isFollowing) {
-        unFollowUser(id);
-      } else {
-        followUser(id);
-      }
+    }
+    if (isFollowing) {
+      unFollowUser(id);
+    } else {
+      followUser(id);
     }
   };
 
@@ -180,12 +180,14 @@ const PostDetails = ({ id }: { id: string }) => {
                   Premium
                 </span>
               )}
-              {userMe?._id !== post?.authorId?._id && !isFollowing && (
+              {user?.id !== post?.data?.authorId?._id && !isFollowing && (
                 <Button
                   color="primary"
                   radius="full"
                   size="sm"
-                  onClick={() => handleFollow(userMe?._id as string)}
+                  onClick={() =>
+                    handleFollow(post?.data?.authorId?._id as string)
+                  }
                 >
                   Follow
                 </Button>
