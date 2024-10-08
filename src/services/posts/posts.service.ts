@@ -13,9 +13,20 @@ export const getPostsBySearchTerm = async (search: string) => {
   }
 };
 
-export const getAllPosts = async () => {
+export const getAllPosts = async (
+  page?: number,
+  limit?: number,
+  category?: string,
+  sorting?: boolean
+) => {
   try {
-    const response = await axiosInstance.get('/post');
+    const url = category
+      ? `/post?page=${page}&limit=${limit}&category=${category}`
+      : sorting
+      ? `/post?page=${page}&limit=${limit}&sort=-upVotes`
+      : `/post?page=${page}&limit=${limit}`;
+
+    const response = await axiosInstance.get(url);
     revalidateTag('posts');
     return response.data;
   } catch (error) {

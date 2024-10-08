@@ -1,16 +1,12 @@
 'use client';
 import {
+  deletePostHook,
   useDownVotePostMutation,
   useUpVotePostMutation,
 } from '@/src/hooks/posts/posts.hook';
-import {
-  useFollowUserMutation,
-  useUnFollowUserMutation,
-  useUserMeHook,
-} from '@/src/hooks/user/user.hook';
+import { useUserMeHook } from '@/src/hooks/user/user.hook';
 import { UserContext } from '@/src/provider/user.provider';
 import { IPost } from '@/src/types/post.type';
-import { IUser } from '@/src/types/user.type';
 import {
   Avatar,
   Button,
@@ -41,35 +37,14 @@ export default function UserPostCard({ post }: { post: IPost }) {
 
   const { user }: any = useContext(UserContext);
   const { data: userMe, isPending } = useUserMeHook();
-
-  // check if the user is following the post author
-  const isFollowing = userMe?.data?.following?.some(
-    (follower: IUser) => follower._id === post.authorId._id
-  );
-
+  const { mutate: deletePost } = deletePostHook();
   // check if the user has upvoted the post
   const hasUpvoted = post?.upVotes?.includes(user?.id);
   const hasDownvoted = post?.downVotes?.includes(user?.id);
 
-  // follow and unfollow handler
-  const { mutate: followUser } = useFollowUserMutation();
-  const { mutate: unFollowUser } = useUnFollowUserMutation();
-
   // upvote and downvote handler
   const { mutate: upVotePost } = useUpVotePostMutation();
   const { mutate: downVotePost } = useDownVotePostMutation();
-
-  const handleFollow = (id: string) => {
-    if (!user?.id) {
-      toast.error('Please login to follow user');
-      router.push('/login');
-      if (isFollowing) {
-        unFollowUser(id);
-      } else {
-        followUser(id);
-      }
-    }
-  };
 
   const upVoteHandler = (id: string) => {
     if (!user?.id) {
@@ -87,6 +62,10 @@ export default function UserPostCard({ post }: { post: IPost }) {
     } else {
       downVotePost(id);
     }
+  };
+
+  const deletePostHandler = (id: string) => {
+    deletePost(id);
   };
 
   return (
@@ -116,16 +95,28 @@ export default function UserPostCard({ post }: { post: IPost }) {
               </span>
             </div>
           </div>
-          {post?.type === 'premium' && (
-            <span className="flex items-center gap-1">
-              <StarIcon className="w-4 h-4 mr-1 text-yellow-400" />
-            </span>
-          )}
+
           <div className="flex gap-2">
+            {post?.type === 'premium' && (
+              <span className="flex items-center gap-1">
+                <StarIcon className="w-4 h-4 mr-1 text-yellow-400" />
+              </span>
+            )}
             <Button color="primary" radius="full" size="sm">
-              Edit
+              <Link
+                href={`/dashboard/content/${post?._id}`}
+                className="text-default-900 text-sm"
+              >
+                Edit
+              </Link>
             </Button>
-            <Button color="danger" radius="full" size="sm">
+            <Button
+              color="danger"
+              radius="full"
+              size="sm"
+              type="button"
+              onClick={() => deletePostHandler(post?._id)}
+            >
               Delete
             </Button>
           </div>

@@ -124,7 +124,7 @@ The key goals of the project include:
 
 ### Steps to Run Locally
 
-1. **Clone the Repository**:
+1. **Clone the Repository client-side**:
 
    ```bash
    git clone https://github.com/AbuBokorprog/pet-tips-stories-client
@@ -144,6 +144,27 @@ The key goals of the project include:
    ```
 
    Visit `http://localhost:3000` to view the application.
+
+   1. **Clone the Repository server-side**:
+
+   ```bash
+   git clone https://github.com/AbuBokorprog/pet-tips-stories-server
+   cd pets-tips-stories-client
+   ```
+
+4. **Install Dependencies**:
+
+   ```bash
+   yarn install
+   ```
+
+5. **Run the Development Server**:
+
+   ```bash
+   npm run dev
+   ```
+
+   Visit `http://localhost:5000` to view the application.
 
 ## API Integration
 

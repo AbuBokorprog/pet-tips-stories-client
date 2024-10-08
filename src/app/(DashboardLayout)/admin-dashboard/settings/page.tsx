@@ -1,9 +1,18 @@
+'use client';
 import React from 'react';
+import { Card, CardBody, CardHeader } from '@nextui-org/react';
 
 export default function SettingsPage() {
   return (
-    <div>
-      <h2>Settings Page</h2>
+    <div className="flex justify-center items-center h-screen">
+      <Card>
+        <CardHeader>
+          <h2>Under Construction</h2>
+        </CardHeader>
+        <CardBody>
+          <p>This page is not ready yet or in construction level.</p>
+        </CardBody>
+      </Card>
     </div>
   );
 }

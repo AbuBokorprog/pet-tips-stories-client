@@ -1,57 +1,79 @@
 'use client';
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { IPost } from '@/src/types/post.type';
 import PostCard from '@/src/components/ui/home/PostCard';
-import {
-  getAllPostsHook,
-  getPostsByCategoryHook,
-  getTopPostsHook,
-} from '@/src/hooks/posts/posts.hook';
+import { getAllPostsHook } from '@/src/hooks/posts/posts.hook';
 import { Avatar, Link } from '@nextui-org/react';
 import { UserContext } from '@/src/provider/user.provider';
 import NewsFeedSkeleton from '@/src/components/skeleton/NewsFeedSkeleton';
+import NewsFeedTab from '@/src/components/ui/home/NewsFeedTab';
 
 export default function NewsFeed() {
   const { user }: any = useContext(UserContext);
   const [activeTab, setActiveTab] = useState('discover');
-  const { data: allPosts, isLoading: isLoadingAllPosts } = getAllPostsHook();
-  const { data: topPosts, isLoading: isLoadingTopPosts } = getTopPostsHook();
-  const { data: postsByCategory, isLoading: isLoadingPostsByCategory } =
-    getPostsByCategoryHook(activeTab);
+  const [page, setPage] = useState<number>(1);
+  const [posts, setPosts] = useState<IPost[]>([]); // Store the fetched posts
+  const [isFetching, setIsFetching] = useState(false);
+  const limit = 8;
+  let category = '';
+  let sorting = false;
 
-  const filteredPosts = useMemo(() => {
-    if (activeTab === 'discover') return allPosts?.data?.data;
-    if (activeTab === 'top') return topPosts?.data?.data;
-    return postsByCategory?.data?.data;
-  }, [allPosts, topPosts, postsByCategory, activeTab]);
+  if (activeTab === 'tips' || activeTab === 'story') {
+    category = activeTab;
+  } else if (activeTab === 'top') {
+    sorting = true;
+  }
 
+  const {
+    data: allPosts,
+    isLoading: isLoadingAllPosts,
+    refetch,
+  } = getAllPostsHook(page, limit, category, sorting);
+
+  // Fetch more posts when new data is available
+  useEffect(() => {
+    if (allPosts?.data?.data) {
+      setPosts((prevPosts) => [...prevPosts, ...allPosts.data.data]); // Append new posts
+    }
+  }, [allPosts]);
+
+  useEffect(() => {
+    refetch();
+  }, [activeTab]);
+
+  // Handle scrolling and fetching next page
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 &&
+      !isFetching &&
+      page < allPosts?.data?.meta?.totalPage // Only fetch if not at last page
+    ) {
+      setIsFetching(true);
+      setPage((prevPage) => prevPage + 1);
+      setIsFetching(false);
+    }
+  }, [isFetching, page, allPosts?.data?.meta?.totalPage]);
+
+  // Add scroll event listener
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+
+  // handle active tab
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
+    setPage(1);
+    setPosts([]);
   };
 
   return (
     <>
-      {isLoadingAllPosts || isLoadingTopPosts || isLoadingPostsByCategory ? (
+      {isLoadingAllPosts ? (
         <NewsFeedSkeleton />
       ) : (
         <div>
-          <div className="mb-4">
-            <div className="flex space-x-4 overflow-x-auto p-4">
-              {['discover', 'top', 'tips', 'story'].map((tab) => (
-                <button
-                  key={tab}
-                  className={`px-4 py-2 text-sm font-medium rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 ${
-                    activeTab === tab
-                      ? 'text-white bg-blue-500 hover:bg-blue-600'
-                      : 'text-gray-700 bg-gray-100 hover:bg-gray-200'
-                  }`}
-                  onClick={() => handleTabClick(tab)}
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                </button>
-              ))}
-            </div>
-          </div>
+          <NewsFeedTab activeTab={activeTab} handleTabClick={handleTabClick} />
           <div className="flex items-center space-x-2 mb-4 lg:px-4">
             <Avatar
               src={user?.profilePicture}
@@ -69,7 +91,7 @@ export default function NewsFeed() {
             </Link>
           </div>
           <div className="mx-auto space-y-4 lg:px-4">
-            {filteredPosts?.map((post: IPost) => (
+            {posts.map((post: IPost) => (
               <PostCard key={post._id} post={post} />
             ))}
           </div>

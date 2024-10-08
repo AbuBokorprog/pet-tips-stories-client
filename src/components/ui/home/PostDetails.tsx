@@ -47,7 +47,7 @@ const PostDetails = ({ id }: { id: string }) => {
   const [editedCommentId, setEditedCommentId] = useState('');
   const { data: post, isLoading: isLoadingPost } = getPostByIdHook(id);
   const router = useRouter();
-  const content = DOMPurify.sanitize(post?.data?.content || '');
+  const content = DOMPurify?.sanitize(post?.data?.content || '');
   const fromAgo = moment(post?.data?.createdAt).fromNow();
 
   const {

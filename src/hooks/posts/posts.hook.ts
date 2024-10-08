@@ -23,10 +23,15 @@ export const getPostsBySearchTermHook = (search: any) => {
   });
 };
 
-export const getAllPostsHook = () => {
+export const getAllPostsHook = (
+  page?: number,
+  limit?: number,
+  category?: string,
+  sorting?: boolean
+) => {
   return useQuery({
-    queryKey: ['ALL_POSTS'],
-    queryFn: async () => await getAllPosts(),
+    queryKey: ['ALL_POSTS', page, limit, category, sorting],
+    queryFn: async () => await getAllPosts(page, limit, category, sorting),
   });
 };
 
