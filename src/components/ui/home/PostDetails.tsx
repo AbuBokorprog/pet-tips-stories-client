@@ -38,13 +38,15 @@ import {
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { toast } from 'sonner';
 import PostDetailsSkeleton from '../../skeleton/PostDetailsSkeleton';
+import { UserContext } from '@/src/provider/user.provider';
 
 const PostDetails = ({ id }: { id: string }) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editedCommentId, setEditedCommentId] = useState('');
+  const { user }: any = useContext(UserContext);
   const { data: post, isLoading: isLoadingPost } = getPostByIdHook(id);
   const router = useRouter();
   const content = DOMPurify?.sanitize(post?.data?.content || '');
@@ -62,8 +64,12 @@ const PostDetails = ({ id }: { id: string }) => {
   );
 
   // check if the user has upvoted the post
-  const hasUpvoted = post?.upVotes?.includes(userMe?.data?._id);
-  const hasDownvoted = post?.downVotes?.includes(userMe?.data?._id);
+  const hasUpvoted = post?.data?.upVotes?.some(
+    (votedUser: IUser) => votedUser?._id === user?.id
+  );
+  const hasDownvoted = post?.data?.downVotes?.some(
+    (votedUser: IUser) => votedUser?._id === user?.id
+  );
 
   // follow and unfollow handler
   const { mutate: followUser } = useFollowUserMutation();
@@ -86,7 +92,7 @@ const PostDetails = ({ id }: { id: string }) => {
   };
 
   const upVoteHandler = (id: string) => {
-    if (!userMe?.data?.id) {
+    if (!user.id) {
       toast.error('Please login to upvote');
       router.push('/login');
     } else {
@@ -95,7 +101,7 @@ const PostDetails = ({ id }: { id: string }) => {
   };
 
   const downVoteHandler = (id: string) => {
-    if (!userMe?.data?.id) {
+    if (!user.id) {
       toast.error('Please login to downvote');
       router.push('/login');
     } else {
@@ -140,9 +146,7 @@ const PostDetails = ({ id }: { id: string }) => {
             <div className="flex gap-5">
               <Link
                 href={`${
-                  !userMe?.data?.id
-                    ? '/login'
-                    : `/profile/${post?.authorId?._id}`
+                  !user.id ? '/login' : `/profile/${post?.authorId?._id}`
                 }`}
               >
                 <Avatar
@@ -156,7 +160,7 @@ const PostDetails = ({ id }: { id: string }) => {
               <div className="flex flex-col gap-1 items-start justify-center">
                 <Link
                   href={`${
-                    !userMe?.data?.id
+                    !user.id
                       ? '/login'
                       : `/profile/${post?.data?.authorId?._id}`
                   }`}
@@ -176,17 +180,16 @@ const PostDetails = ({ id }: { id: string }) => {
                   Premium
                 </span>
               )}
-              {userMe?.data?.id !== post?.data?.authorId?._id &&
-                !isFollowing && (
-                  <Button
-                    color="primary"
-                    radius="full"
-                    size="sm"
-                    onClick={() => handleFollow(userMe?.data?._id as string)}
-                  >
-                    Follow
-                  </Button>
-                )}
+              {userMe?._id !== post?.authorId?._id && !isFollowing && (
+                <Button
+                  color="primary"
+                  radius="full"
+                  size="sm"
+                  onClick={() => handleFollow(userMe?._id as string)}
+                >
+                  Follow
+                </Button>
+              )}
             </div>
           </CardHeader>
           <CardBody className="px-3 py-0 text-small text-default-600">

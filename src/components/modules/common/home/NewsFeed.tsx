@@ -30,12 +30,32 @@ export default function NewsFeed() {
     refetch,
   } = getAllPostsHook(page, limit, category, sorting);
 
-  // Fetch more posts when new data is available
+  // Fetch more posts when new data is available and replace existing posts with new ones
   useEffect(() => {
     if (allPosts?.data?.data) {
-      setPosts((prevPosts) => [...prevPosts, ...allPosts.data.data]); // Append new posts
+      const newPosts = allPosts.data.data.map((post: any) => {
+        const existingPostIndex = posts.findIndex(
+          (prevPost) => prevPost._id === post._id
+        );
+        if (existingPostIndex !== -1) {
+          return { ...post, isNew: true }; // Mark the post as new to replace the existing one
+        }
+        return post;
+      });
+      setPosts((prevPosts) => {
+        const updatedPosts = prevPosts.map((prevPost) => {
+          const newPost = newPosts.find(
+            (post: any) => post._id === prevPost._id && post.isNew
+          );
+          return newPost ? { ...newPost, isNew: false } : prevPost; // Replace existing post with new one if marked as new
+        });
+        return [
+          ...updatedPosts,
+          ...newPosts.filter((post: any) => !post.isNew),
+        ]; // Add new posts that are not replacements
+      });
     }
-  }, [allPosts]);
+  }, [allPosts, posts]);
 
   useEffect(() => {
     refetch();

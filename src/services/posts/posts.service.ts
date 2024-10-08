@@ -6,7 +6,7 @@ import { revalidateTag } from 'next/cache';
 export const getPostsBySearchTerm = async (search: string) => {
   try {
     const response = await axiosInstance.get(`/post?searchTerm=${search}`);
-    revalidateTag('posts');
+
     return response.data;
   } catch (error) {
     throw error;
@@ -27,7 +27,7 @@ export const getAllPosts = async (
       : `/post?page=${page}&limit=${limit}`;
 
     const response = await axiosInstance.get(url);
-    revalidateTag('posts');
+
     return response.data;
   } catch (error) {
     throw error;
@@ -37,7 +37,7 @@ export const getAllPosts = async (
 export const getPostsByCategory = async (category: string) => {
   try {
     const response = await axiosInstance.get(`/post?category=${category}`);
-    revalidateTag('posts');
+
     return response.data;
   } catch (error) {
     throw error;
@@ -47,7 +47,7 @@ export const getPostsByCategory = async (category: string) => {
 export const getTopPosts = async () => {
   try {
     const response = await axiosInstance.get('/post?sort=-upVotes');
-    revalidateTag('posts');
+
     return response.data;
   } catch (error) {
     throw error;
@@ -57,7 +57,7 @@ export const getTopPosts = async () => {
 export const getPostsByUser = async (userId: string) => {
   try {
     const response = await axiosInstance.get(`/post/author/${userId}`);
-    revalidateTag('posts');
+
     return response.data;
   } catch (error) {
     throw error;
@@ -67,7 +67,7 @@ export const getPostsByUser = async (userId: string) => {
 export const getPostById = async (id: string) => {
   try {
     const response = await axiosInstance.get(`/post/${id}`);
-    revalidateTag('posts');
+
     return response.data;
   } catch (error) {
     throw error;

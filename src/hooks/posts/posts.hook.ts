@@ -117,6 +117,7 @@ export const useUpVotePostMutation = () => {
     onSuccess: () => {
       //   toast.success('Post upvoted successfully');
       queryClient.invalidateQueries({ queryKey: ['ALL_POSTS'] });
+      queryClient.invalidateQueries({ queryKey: ['POST_BY_ID'] });
     },
     onError: (error) => {
       toast.error('Failed to upvote post');
@@ -132,6 +133,7 @@ export const useDownVotePostMutation = () => {
     onSuccess: () => {
       //   toast.success('Post downvoted successfully');
       queryClient.invalidateQueries({ queryKey: ['ALL_POSTS'] });
+      queryClient.invalidateQueries({ queryKey: ['POST_BY_ID'] });
     },
     onError: (error) => {
       toast.error('Failed to downvote post');
