@@ -1,5 +1,18 @@
 import CreatePost from '@/src/components/modules/common/home/CreatePost';
+import { Metadata } from 'next';
 import React from 'react';
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Create Post',
+    template: `%s - Create Post`,
+  },
+  description:
+    'This is create post page. Where user can create they are contents',
+  icons: {
+    icon: '/favicon.ico',
+  },
+};
 
 export default function CreatePostPage() {
   return (

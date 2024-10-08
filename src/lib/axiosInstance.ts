@@ -33,13 +33,13 @@ axiosInstance.interceptors.response.use(
   },
   async function (error) {
     const config = error.config;
-    if (error?.response?.status === 401 && !config.sent) {
-      config.sent = true;
-      const res = await axiosInstance.get('/refresh-token');
-      const accessToken = res.data.accessToken;
-      config.headers['Authorization'] = `Bearer ${accessToken}`;
-      return axiosInstance(config);
-    }
+    // if (error?.response?.status === 401 && !config.sent) {
+    //   config.sent = true;
+    //   const res = await axiosInstance.get('/refresh-token');
+    //   const accessToken = res.data.accessToken;
+    //   config.headers['Authorization'] = `Bearer ${accessToken}`;
+    //   return axiosInstance(config);
+    // }
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     return Promise.reject(error);

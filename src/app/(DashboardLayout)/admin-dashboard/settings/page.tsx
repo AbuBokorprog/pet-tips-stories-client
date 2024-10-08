@@ -1,18 +1,22 @@
-'use client';
+import Setting from '@/src/components/modules/dashboard/Settings';
+import { Metadata } from 'next';
 import React from 'react';
-import { Card, CardBody, CardHeader } from '@nextui-org/react';
 
-export default function SettingsPage() {
+export const metadata: Metadata = {
+  title: {
+    default: 'Admin - Settings',
+    template: `%s - Admin Settings`,
+  },
+  description: 'This is setting page only for admin.',
+  icons: {
+    icon: '/favicon.ico',
+  },
+};
+
+export default function SettingPage() {
   return (
-    <div className="flex justify-center items-center h-screen">
-      <Card>
-        <CardHeader>
-          <h2>Under Construction</h2>
-        </CardHeader>
-        <CardBody>
-          <p>This page is not ready yet or in construction level.</p>
-        </CardBody>
-      </Card>
+    <div>
+      <Setting />
     </div>
   );
 }

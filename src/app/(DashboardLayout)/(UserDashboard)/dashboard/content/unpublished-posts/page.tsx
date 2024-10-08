@@ -2,12 +2,25 @@ import UserPostCard from '@/src/components/ui/user-dashboard/UserPostCard';
 import { getCurrentUser } from '@/src/services/auth/auth.services';
 import { getPostsByUser } from '@/src/services/posts/posts.service';
 import { IPost } from '@/src/types/post.type';
+import { Metadata } from 'next';
 import React from 'react';
 
 type AllPostsByAuthor = {
   success: boolean;
   message: string;
   data: IPost[];
+};
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Unpublished Posts',
+    template: `%s - Unpublished Posts`,
+  },
+  description:
+    'This is unpublished posts page, where user can see thay are all un published posts.',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default async function UnpublishedPostsPage() {

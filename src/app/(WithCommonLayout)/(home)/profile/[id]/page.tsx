@@ -5,6 +5,30 @@ import Profile from '@/src/components/modules/common/home/Profile';
 import { getUserById } from '@/src/services/user/user.service';
 import { getPostsByUser } from '@/src/services/posts/posts.service';
 
+import { Metadata } from 'next';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const { id } = params;
+  const userMe = await getUserById(id);
+  // Assume we have the user's name from params or fetched data
+  const userName = userMe?.data?.username || 'Profile';
+
+  return {
+    title: {
+      default: userName,
+      template: `%s - Profile`,
+    },
+    description: `Viewing the profile of "${userName}".`,
+    icons: {
+      icon: '/favicon.ico',
+    },
+  };
+}
+
 export default async function ProfilePage({
   params,
 }: {

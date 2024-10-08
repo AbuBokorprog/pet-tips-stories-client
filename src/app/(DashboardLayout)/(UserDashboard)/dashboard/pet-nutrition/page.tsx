@@ -1,5 +1,18 @@
 import NutritionCalculator from '@/src/components/modules/dashboard/NutritionCalculator';
+import { Metadata } from 'next';
 import React from 'react';
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Pet Nutrition',
+    template: `%s - Pet Nutrition`,
+  },
+  description:
+    'This is pet nutrition page where users can generate pdf of nutrition based on their pets situations.',
+  icons: {
+    icon: '/favicon.ico',
+  },
+};
 
 export default function PetNutritionPage() {
   return (

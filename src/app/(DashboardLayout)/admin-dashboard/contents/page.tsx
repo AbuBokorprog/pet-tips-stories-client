@@ -2,7 +2,19 @@ import AllPostsSkeleton from '@/src/components/skeleton/AllPostsSkeleton';
 import ContentsCard from '@/src/components/ui/admin-dashboard/ContentsCard';
 import { getAllPosts } from '@/src/services/posts/posts.service';
 import { IPost } from '@/src/types/post.type';
+import { Metadata } from 'next';
 import React, { Suspense } from 'react';
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Admin - All Posts',
+    template: `%s - Admin Posts`,
+  },
+  description: 'This is the all posts page for administrators.',
+  icons: {
+    icon: '/favicon.ico',
+  },
+};
 
 export default async function ContentsPage() {
   const { data } = await getAllPosts();
