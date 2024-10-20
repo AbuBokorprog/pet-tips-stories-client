@@ -11,7 +11,7 @@ const NewsFeedTab: React.FC<NewsFeedTabProps> = ({
 }) => {
   return (
     <div className="mb-4">
-      <div className="flex space-x-4 overflow-x-auto p-4">
+      <div className="flex space-x-4 overflow-x-auto py-4">
         {['discover', 'top', 'tips', 'story'].map((tab) => (
           <button
             key={tab}

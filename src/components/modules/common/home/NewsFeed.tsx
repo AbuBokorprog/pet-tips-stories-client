@@ -94,7 +94,7 @@ export default function NewsFeed() {
       ) : (
         <div>
           <NewsFeedTab activeTab={activeTab} handleTabClick={handleTabClick} />
-          <div className="flex items-center space-x-2 mb-4 lg:px-4">
+          <div className="flex items-center space-x-2 mb-4">
             <Link href={`${!user?.id ? '/login' : `/profile/${user?.id}`}`}>
               <Avatar
                 isBordered
@@ -114,7 +114,7 @@ export default function NewsFeed() {
               </div>
             </Link>
           </div>
-          <div className="mx-auto space-y-4 lg:px-4">
+          <div className="mx-auto space-y-4">
             {posts.map((post: IPost) => (
               <PostCard key={post._id} post={post} />
             ))}
