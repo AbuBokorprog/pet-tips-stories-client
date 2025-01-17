@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default async function page() {
   return (
-    <div className="home-layout flex justify-center gap-10 w-full items-start h-full bg-white dark:bg-black text-gray-800 dark:text-gray-200">
+    <div className="home-layout flex justify-center gap-10 w-full items-start h-full bg-white dark:bg-black text-gray-800 dark:text-gray-200 px-2 lg:px-0">
       <div className="left-sidebar md:w-[500px] hidden lg:block sticky top-14">
         <LeftSidebar />
       </div>

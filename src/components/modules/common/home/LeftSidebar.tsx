@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React from 'react';
 
 export default function LeftSidebar() {
@@ -9,76 +10,60 @@ export default function LeftSidebar() {
         <nav>
           <ul className="category-list space-y-2">
             <li className="category-item">
-              <a
-                href="#"
+              <Link
+                href="/"
                 className="category-link flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
               >
                 <span className="category-icon mr-3">🏠</span>
-                <span className="text-sm font-medium">Home</span>
-              </a>
+                <span className=" font-medium">Home</span>
+              </Link>
             </li>
             <li className="category-item">
-              <a
-                href="#"
+              <Link
+                href="/reading-list"
                 className="category-link flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
               >
                 <span className="category-icon mr-3">📚</span>
-                <span className="text-sm font-medium">Reading List</span>
-              </a>
+                <span className=" font-medium">Reading List</span>
+              </Link>
             </li>
             <li className="category-item">
-              <a
-                href="#"
+              <Link
+                href="/tags"
                 className="category-link flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
               >
                 <span className="category-icon mr-3">🏷️</span>
-                <span className="text-sm font-medium">Tags</span>
-              </a>
+                <span className=" font-medium">Tags</span>
+              </Link>
             </li>
-            <li className="category-item">
-              <a
-                href="#"
-                className="category-link flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
-              >
-                <span className="category-icon mr-3">🎙️</span>
-                <span className="text-sm font-medium">Podcasts</span>
-              </a>
-            </li>
-            <li className="category-item">
-              <a
+
+            {/* <li className="category-item">
+              <Link
                 href="#"
                 className="category-link flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
               >
                 <span className="category-icon mr-3">📹</span>
-                <span className="text-sm font-medium">Videos</span>
-              </a>
-            </li>
+                <span className=" font-medium">Videos</span>
+              </Link>
+            </li> */}
+
             <li className="category-item">
-              <a
-                href="#"
-                className="category-link flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
-              >
-                <span className="category-icon mr-3">💼</span>
-                <span className="text-sm font-medium">Jobs</span>
-              </a>
-            </li>
-            <li className="category-item">
-              <a
-                href="#"
+              <Link
+                href="/about"
                 className="category-link flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
               >
                 <span className="category-icon mr-3">👥</span>
-                <span className="text-sm font-medium">About</span>
-              </a>
+                <span className=" font-medium">About</span>
+              </Link>
             </li>
             <li className="category-item">
-              <a
-                href="#"
+              <Link
+                href="/contact"
                 className="category-link flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
               >
                 <span className="category-icon mr-3">📞</span>
-                <span className="text-sm font-medium">Contact</span>
-              </a>
+                <span className=" font-medium">Contact</span>
+              </Link>
             </li>
           </ul>
         </nav>

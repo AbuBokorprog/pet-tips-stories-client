@@ -73,18 +73,10 @@ export const Navbar = () => {
       name: 'Admin Dashboard',
       href: '/admin-dashboard',
     },
-    {
-      name: 'About',
-      href: '/about',
-    },
-    {
-      name: 'Contact',
-      href: '/contact',
-    },
   ];
 
   return (
-    <NextUINavbar maxWidth="2xl" position="sticky">
+    <NextUINavbar maxWidth="2xl" position="sticky" className="shadow border-b ">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarMenuToggle
           // aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
@@ -191,6 +183,36 @@ export const Navbar = () => {
       <NavbarMenu>
         <SearchField />
         <div className="mx-4 mt-2 flex flex-col gap-2">
+          <NavbarMenuItem className="category-item">
+            <Link
+              href="/"
+              color="foreground"
+              className="category-link flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+            >
+              <span className="category-icon mr-3">🏠</span>
+              <span className=" font-medium">Home</span>
+            </Link>
+          </NavbarMenuItem>
+          <NavbarMenuItem className="category-item">
+            <Link
+              href="/reading-list"
+              color="foreground"
+              className="category-link flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+            >
+              <span className="category-icon mr-3">📚</span>
+              <span className=" font-medium">Reading List</span>
+            </Link>
+          </NavbarMenuItem>
+          <NavbarMenuItem className="category-item">
+            <Link
+              href="/tags"
+              color="foreground"
+              className="category-link flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+            >
+              <span className="category-icon mr-3">🏷️</span>
+              <span className=" font-medium">Tags</span>
+            </Link>
+          </NavbarMenuItem>
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link color="foreground" href={item.href} size="lg">
