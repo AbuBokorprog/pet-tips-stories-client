@@ -15,7 +15,7 @@ export default function RightSidebar() {
       {isLoading ? (
         <FollowUserSkeleton />
       ) : (
-        <div className="bg-white dark:bg-gray-950 shadow-md rounded-lg p-4 h-screen sticky top-0">
+        <div className="bg-white dark:bg-gray-950 shadow-md rounded-lg py-4 pl-4 pr-6 h-screen sticky top-0">
           <div className="users-sidebar">
             <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
               People You May Know
@@ -24,7 +24,7 @@ export default function RightSidebar() {
               {users?.data?.data
                 ?.filter((Iuser: IUser) => user?.id !== Iuser._id)
                 .map((Iuser: IUser) => (
-                  <li key={Iuser._id}>
+                  <li key={Iuser._id} className="border rounded-md p-2">
                     <FollowUserCard user={Iuser} currentUser={user} />
                   </li>
                 ))}

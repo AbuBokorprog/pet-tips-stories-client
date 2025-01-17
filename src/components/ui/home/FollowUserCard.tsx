@@ -37,7 +37,7 @@ export default function FollowUserCard({
   };
 
   return (
-    <div className="user-item flex items-center">
+    <div className="user-item flex gap-1 items-center">
       <Link href={`${!currentUser ? '/login' : `/profile/${user?._id}`}`}>
         <img
           src={user?.profilePicture}
