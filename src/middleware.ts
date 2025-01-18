@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getCurrentUser } from './services/auth/auth.services';
-import { IUser } from './types/user.type';
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
@@ -10,8 +9,13 @@ export async function middleware(request: NextRequest) {
   type Role = keyof typeof Routes;
 
   const Routes = {
-    admin: ['/admin-dashboard', '/admin-dashboard/:path*', '/profile'],
-    user: ['/dashboard', '/dashboard/:path*', '/profile'],
+    admin: [
+      '/admin-dashboard',
+      '/admin-dashboard/:path*',
+      '/profile',
+      '/reading-list',
+    ],
+    user: ['/dashboard', '/dashboard/:path*', '/profile', '/reading-list'],
   };
 
   const pathName = request.nextUrl.pathname;
@@ -47,6 +51,7 @@ export const config = {
     '/login',
     '/registration',
     '/profile',
+    '/reading-list',
     // '/posts/create-post',
   ],
 };

@@ -9,6 +9,7 @@ export interface IPost {
   authorId: IUser;
   comments: any[];
   downVotes: any[];
+  tags?: any[];
   upVotes: any[];
   image: string;
   isPublished: boolean;

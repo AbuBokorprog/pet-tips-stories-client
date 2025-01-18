@@ -4,11 +4,7 @@ import { Avatar } from '@nextui-org/avatar';
 import { Button } from '@nextui-org/button';
 import {
   HomeIcon,
-  UserIcon,
-  SettingsIcon,
   LogOutIcon,
-  UsersIcon,
-  ChartBarIcon,
   MenuIcon,
   XIcon,
   ChevronDownIcon,
@@ -47,8 +43,8 @@ export default function Sidebar({ menuItems }: { menuItems: any }) {
 
   const logoutHandler = () => {
     setLoading(true);
-    logoutUser();
     router.push('/');
+    logoutUser();
     toast.success(`${user?.username} logged out successfully!`);
     if (protectedRoutes.some((r) => pathname.match(r))) {
       router.push('/');
@@ -152,12 +148,6 @@ export default function Sidebar({ menuItems }: { menuItems: any }) {
           </Button>
         </div>
       </div>
-      {/* {isMobile && isOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={toggleSidebar}
-        />
-      )} */}
     </>
   );
 }

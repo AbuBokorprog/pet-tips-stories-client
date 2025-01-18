@@ -1,9 +1,12 @@
 import Container from '@/src/components/container';
 import LeftSidebar from '@/src/components/modules/common/home/LeftSidebar';
-import TagsCard from '@/src/components/ui/home/TagsCard';
+import PostCard from '@/src/components/ui/home/PostCard';
+import { retrieveUserAllBookmark } from '@/src/services/bookmark/bookmark.service';
+import { TAllBookmark } from '@/src/types/bookmark.type';
 import React from 'react';
 
-export default function ReadingListPage() {
+export default async function ReadingListPage() {
+  const bookmarkAllData = await retrieveUserAllBookmark();
   return (
     <Container>
       <div className="py-5 lg:py-10 lg:px-5">
@@ -15,8 +18,8 @@ export default function ReadingListPage() {
           <LeftSidebar />
         </div>
         <div className="w-full grid grid-cols-1 gap-5 mx-auto items-center justify-center lg:px-5">
-          {[1, 2, 4, 5, 6].map((T) => (
-            <TagsCard key={T} />
+          {bookmarkAllData?.data?.map((bookmark: TAllBookmark) => (
+            <PostCard key={bookmark?._id} post={bookmark?.id} />
           ))}
         </div>
       </div>
