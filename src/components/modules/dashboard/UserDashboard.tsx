@@ -24,7 +24,7 @@ const UserDashboard = ({ user }: { user: IUser }) => {
       <h2 className="text-3xl font-bold mb-6">
         {user?.username} Welcome to Your Dashboard
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <Card className="col-span-1">
           <CardBody className="p-6">
             <Avatar

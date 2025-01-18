@@ -56,17 +56,19 @@ export default function Sidebar({ menuItems }: { menuItems: any }) {
   return (
     <>
       {isMobile && (
-        <Button
-          className="fixed top-0 left-0 z-50"
-          isIconOnly
-          aria-label="Toggle Menu"
-          onClick={toggleSidebar}
-        >
-          {isOpen ? <XIcon size={24} /> : <MenuIcon size={24} />}
-        </Button>
+        <div className="bg-white w-full">
+          <Button
+            className="fixed top-0 left-0 z-50"
+            isIconOnly
+            aria-label="Toggle Menu"
+            onClick={toggleSidebar}
+          >
+            {isOpen ? <XIcon size={24} /> : <MenuIcon size={24} />}
+          </Button>
+        </div>
       )}
       <div
-        className={`h-screen bg-gray-100 dark:bg-gray-800 w-72 lg:w-80 fixed left-0 top-0 transition-all duration-300 ease-in-out ${
+        className={`h-screen bg-gray-100 dark:bg-gray-800 w-72 lg:w-80 fixed left-0 top-0 transition-all duration-300 ease-in-out z-30 ${
           isOpen || !isMobile ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

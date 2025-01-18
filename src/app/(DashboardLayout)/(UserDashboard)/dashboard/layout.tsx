@@ -50,7 +50,9 @@ export default function userDashboardLayout({
       <div className="mb-10 md:mb-0 lg:w-80">
         <Sidebar menuItems={userMenuItems} />
       </div>
-      <main className="flex-grow p-4 md:p-8 overflow-auto">{children}</main>
+      <main className="flex-grow p-4 md:p-8 overflow-auto md:ml-60 lg:ml-28 xl:ml-0">
+        {children}
+      </main>
     </div>
   );
 }

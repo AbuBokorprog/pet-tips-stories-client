@@ -34,7 +34,7 @@ export default async function PublishedPostsPage() {
       <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-200">
         Published Posts.
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-center">
         {publishedPosts.map((post: IPost) => (
           <div
             key={post._id}

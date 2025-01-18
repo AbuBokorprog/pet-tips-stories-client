@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function PetNutritionPage() {
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-default-100 rounded-lg shadow-md">
+    <div className=" mx-auto p-6 bg-default-100 rounded-lg shadow-md">
       <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">
         Pet Nutrition Calculator
       </h1>
