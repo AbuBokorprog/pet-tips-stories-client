@@ -6,7 +6,7 @@ import React from 'react';
 
 export default async function AllTagsPage() {
   const allTagsData = await retrieveAllTags();
-
+  // console.log(allTagsData?.data?.[0]?.followers);
   return (
     <Container>
       <div className="py-5 lg:py-10 lg:px-5">
@@ -22,6 +22,7 @@ export default async function AllTagsPage() {
             createdAt={tag?.createdAt}
             name={tag?.name}
             updatedAt={tag?.updatedAt}
+            followers={tag?.followers}
             description={tag?.description}
           />
         ))}

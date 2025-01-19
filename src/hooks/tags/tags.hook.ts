@@ -1,8 +1,10 @@
 import {
   deleteTags,
+  followTag,
   retrieveAllTags,
   retrieveSpecificTags,
   tagCreated,
+  unFollowTag,
   updateTags,
 } from '@/src/services/tags/tags.service';
 import { TTags } from '@/src/types/tags.type';
@@ -58,9 +60,42 @@ export const retrieveTagHook = async () => {
     queryFn: async () => await retrieveAllTags(),
   });
 };
+
 export const retrieveSpecificTagHook = async (id: string) => {
   return useQuery({
     queryKey: ['specific_tag', id],
     queryFn: async () => await retrieveSpecificTags(id),
+  });
+};
+
+export const useTagFollowMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ['FOLLOW_TAG'],
+    mutationFn: async (id: string) => await followTag(id),
+    onSuccess: () => {
+      toast.success('Tag followed successfully');
+      queryClient.invalidateQueries({ queryKey: ['USER_ME'] });
+      queryClient.invalidateQueries({ queryKey: ['all_tag'] });
+    },
+    onError: (error) => {
+      toast.error('Failed to follow tag');
+    },
+  });
+};
+
+export const useTagUnFollowMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ['UNFOLLOW_TAG'],
+    mutationFn: async (id: string) => await unFollowTag(id),
+    onSuccess: () => {
+      toast.success('tag unfollowed successfully');
+      queryClient.invalidateQueries({ queryKey: ['USER_ME'] });
+      queryClient.invalidateQueries({ queryKey: ['all_tag'] });
+    },
+    onError: (error) => {
+      toast.error('Failed to unfollow tag');
+    },
   });
 };

@@ -6,6 +6,7 @@ export interface IUser {
   profilePicture: string;
   followers?: IUser[];
   following?: IUser[];
+  tagFollowing?: IUser[];
   posts?: any[];
   role: string;
   bio?: any;

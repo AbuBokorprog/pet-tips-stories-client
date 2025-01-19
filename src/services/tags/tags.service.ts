@@ -53,3 +53,25 @@ export const deleteTags = async (id: string) => {
     throw error;
   }
 };
+
+export const followTag = async (id: string) => {
+  try {
+    const response = await axiosInstance.patch(`/tags/${id}/follow`);
+    revalidateTag('user');
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const unFollowTag = async (id: string) => {
+  try {
+    const response = await axiosInstance.patch(`/tags/${id}/unfollow`);
+    revalidateTag('user');
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
